@@ -21,8 +21,8 @@ List of sources :
 * [Full list of latest emojis](https://unicode.org/Public/emoji/latest/emoji-test.txt) - Used to grab the full list of emojis
 * [Classic emojis images](https://unicode.org/emoji/charts/full-emoji-list.html) - Used to grab list of classic emojis images
 * [Skin Tone emojis images](https://unicode.org/emoji/charts/full-emoji-modifiers.html) -  Used to grab list of skin toned emojis images
-* [CLDR Data files annotations](https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations) - Used to translate of emojis titles and keywords
-* [CLDR Data files annotations derived](https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived) - Used to translate of emojis titles and keywords
+* [CLDR Data files annotations](https://github.com/unicode-org/cldr/tree/main/common/annotations) - Used to translate of emojis titles and keywords
+* [CLDR Data files annotations derived](https://github.com/unicode-org/cldr/tree/main/common/annotationsDerived) - Used to translate of emojis titles and keywords
 
 ## ⬇️ Installation
 
