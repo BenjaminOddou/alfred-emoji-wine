@@ -74,7 +74,7 @@ You can edit these triggers (flagged with a `🕹️` symbol) in the user config
 | 🇧🇩 বাংলা      | bn        | 🔴              |
 | 🇱🇰 தமிழ்      | ta        | 🔴              |
 
-> All emojis aren't translated in all languages. Some languages doesn't have an emojipedia link issue.
+> All emojis aren't translated in all languages. Some languages doesn't have an emojipedia link.
 
 If you wish to use another language, open a GitHub issue [here](https://github.com/BenjaminOddou/alfred-emoji-wine/issues/new).
 
