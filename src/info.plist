@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.benjamino.emoji_wine</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>16C31F25-D980-4CA9-A952-E4EF60EF090F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>19628780-1A9C-4A0B-A695-B0F06B0D5702</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>728C691A-5264-41C1-9BB7-C948E2AA9CD6</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>3A4561AA-57B0-416C-A8F2-9201E3E2769C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>3A4561AA-57B0-416C-A8F2-9201E3E2769C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>4BBFE344-B65E-448A-9D5F-08DAA3CB8E2A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>4BBFE344-B65E-448A-9D5F-08DAA3CB8E2A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>42643556-EA15-49CE-ADDF-95B3E8A5A3D1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>FABA22E0-A189-4F0B-A474-EA1D42125563</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>A25C0DF7-A6A9-4FDE-901B-07B09DD3679E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>17312038-2511-4230-8154-6A564F5A90BE</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>5B589A8E-0D1A-4A17-9F2F-27D064B8F038</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3A4561AA-57B0-416C-A8F2-9201E3E2769C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Benjamin Oddou</string>
+	<key>description</key>
+	<string>🍷 Find the most refined emojis</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Emoji Wine</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<true/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>19628780-1A9C-4A0B-A695-B0F06B0D5702</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>2</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:trigger1}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string>Loading emojis...</string>
+				<key>script</key>
+				<string>python3 wine.py</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>🍷 Find the most refined emojis</string>
+				<key>title</key>
+				<string>Emoji Wine</string>
+				<key>type</key>
+				<integer>5</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>16C31F25-D980-4CA9-A952-E4EF60EF090F</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>728C691A-5264-41C1-9BB7-C948E2AA9CD6</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>skipqueryencode</key>
+				<false/>
+				<key>skipvarencode</key>
+				<false/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>https://emojipedia.org/{var:split2}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>42643556-EA15-49CE-ADDF-95B3E8A5A3D1</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>2</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:trigger2}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string>Loading elements...</string>
+				<key>script</key>
+				<string>python3 harvest.py</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>🍇 Downloads the latest data from unicode.org</string>
+				<key>title</key>
+				<string>Refresh the API</string>
+				<key>type</key>
+				<integer>5</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>5B589A8E-0D1A-4A17-9F2F-27D064B8F038</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>python3 api.py</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>5</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>A25C0DF7-A6A9-4FDE-901B-07B09DD3679E</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:split1}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>_web</string>
+						<key>outputlabel</key>
+						<string>web</string>
+						<key>uid</key>
+						<string>FABA22E0-A189-4F0B-A474-EA1D42125563</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:split1}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>_api</string>
+						<key>outputlabel</key>
+						<string>api</string>
+						<key>uid</key>
+						<string>17312038-2511-4230-8154-6A564F5A90BE</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>else</string>
+				<key>hideelse</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>4BBFE344-B65E-448A-9D5F-08DAA3CB8E2A</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>delimiter</key>
+				<string>;</string>
+				<key>discardemptyarguments</key>
+				<false/>
+				<key>outputas</key>
+				<integer>0</integer>
+				<key>trimarguments</key>
+				<true/>
+				<key>variableprefix</key>
+				<string>split</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.split</string>
+			<key>uid</key>
+			<string>3A4561AA-57B0-416C-A8F2-9201E3E2769C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string># 🎩 Alfred Emoji Wine
+
+✨ *Find the most refined emojis* ✨
+
+## ✅ Prerequisites
+
+* MacOS.
+* Alfred 5. Note that the [Alfred Powerpack](https://www.alfredapp.com/powerpack/) is required to use workflows.
+* Requires **python 3.7** or above.
+
+## 🧰 Setup the workflow
+
+Install Python 3.7 or above. Check your version with :
+
+`python --version`
+
+## 🧙‍♂️ Invoke the workflow
+
+There is 2 flows in this workflow :
+
+1. The first one allows you to display emojis. It can be triggered by writing `wine` keyword.
+2. The second allows you to build the local api according the selected language. You can invoke this flow with the `harvest` keyword.
+
+You can edit these triggers (flagged with a `🕹️` symbol) in the user configuration panel.
+
+## 🤖 Usage of the workflow
+
+Go to the dedicated [GitHub repository](https://github.com/BenjaminOddou/alfred-emoji-wine) page to check the documentation
+
+© Benjamin Oddou</string>
+	<key>uidata</key>
+	<dict>
+		<key>16C31F25-D980-4CA9-A952-E4EF60EF090F</key>
+		<dict>
+			<key>xpos</key>
+			<real>270</real>
+			<key>ypos</key>
+			<real>185</real>
+		</dict>
+		<key>19628780-1A9C-4A0B-A695-B0F06B0D5702</key>
+		<dict>
+			<key>xpos</key>
+			<real>720</real>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>3A4561AA-57B0-416C-A8F2-9201E3E2769C</key>
+		<dict>
+			<key>xpos</key>
+			<real>480</real>
+			<key>ypos</key>
+			<real>450</real>
+		</dict>
+		<key>42643556-EA15-49CE-ADDF-95B3E8A5A3D1</key>
+		<dict>
+			<key>xpos</key>
+			<real>720</real>
+			<key>ypos</key>
+			<real>310</real>
+		</dict>
+		<key>4BBFE344-B65E-448A-9D5F-08DAA3CB8E2A</key>
+		<dict>
+			<key>xpos</key>
+			<real>580</real>
+			<key>ypos</key>
+			<real>440</real>
+		</dict>
+		<key>5B589A8E-0D1A-4A17-9F2F-27D064B8F038</key>
+		<dict>
+			<key>xpos</key>
+			<real>270</real>
+			<key>ypos</key>
+			<real>420</real>
+		</dict>
+		<key>728C691A-5264-41C1-9BB7-C948E2AA9CD6</key>
+		<dict>
+			<key>xpos</key>
+			<real>720</real>
+			<key>ypos</key>
+			<real>185</real>
+		</dict>
+		<key>A25C0DF7-A6A9-4FDE-901B-07B09DD3679E</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
+			<key>xpos</key>
+			<real>720</real>
+			<key>ypos</key>
+			<real>435</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>wine</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>search emojis and configure keywords.</string>
+			<key>label</key>
+			<string>🕹️ Trigger 1</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>trigger1</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>harvest</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>refresh the api.</string>
+			<key>label</key>
+			<string>🕹️ Trigger 2</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>trigger2</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>en</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>🇬🇧 English</string>
+						<string>en</string>
+					</array>
+					<array>
+						<string>🇫🇷 Français</string>
+						<string>fr</string>
+					</array>
+					<array>
+						<string>🇪🇸 Español</string>
+						<string>es</string>
+					</array>
+					<array>
+						<string>🇵🇹 Português</string>
+						<string>pt</string>
+					</array>
+					<array>
+						<string>🇮🇹 Italiano</string>
+						<string>it</string>
+					</array>
+					<array>
+						<string>🇩🇪 Deutsch</string>
+						<string>de</string>
+					</array>
+					<array>
+						<string>🇳🇱 Nederlands</string>
+						<string>nl</string>
+					</array>
+					<array>
+						<string>🇳🇴 Norsk</string>
+						<string>no</string>
+					</array>
+					<array>
+						<string>🇸🇪 Svenska</string>
+						<string>se</string>
+					</array>
+					<array>
+						<string>🇩🇰 Dansk</string>
+						<string>dk</string>
+					</array>
+					<array>
+						<string>🇮🇩 Melayu</string>
+						<string>ms</string>
+					</array>
+					<array>
+						<string>🇨🇳 中文</string>
+						<string>zh</string>
+					</array>
+					<array>
+						<string>🇯🇵 日本語</string>
+						<string>ja</string>
+					</array>
+					<array>
+						<string>🇰🇷 한국어</string>
+						<string>ko</string>
+					</array>
+					<array>
+						<string>🇮🇳 हिंदी</string>
+						<string>hi</string>
+					</array>
+					<array>
+						<string>🇮🇳 मराठी</string>
+						<string>mr</string>
+					</array>
+					<array>
+						<string>🇮🇳 తెలుగు</string>
+						<string>te</string>
+					</array>
+					<array>
+						<string>🇧🇩 বাংলা</string>
+						<string>bn</string>
+					</array>
+					<array>
+						<string>🇱🇰 தமிழ்</string>
+						<string>ta</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>select the language you prefer.
+note: not all emojis are available in all languages.</string>
+			<key>label</key>
+			<string>🌐 Language</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>language</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>Submarine</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Mute 🔕</string>
+						<string></string>
+					</array>
+					<array>
+						<string>Submarine 🤿</string>
+						<string>Submarine</string>
+					</array>
+					<array>
+						<string>Pop 🎉</string>
+						<string>Pop</string>
+					</array>
+					<array>
+						<string>Ping ✨</string>
+						<string>Ping</string>
+					</array>
+					<array>
+						<string>Purr 🐯</string>
+						<string>Purr</string>
+					</array>
+					<array>
+						<string>Hero ⚔️</string>
+						<string>Hero</string>
+					</array>
+					<array>
+						<string>Funk 🕺</string>
+						<string>Funk</string>
+					</array>
+					<array>
+						<string>Basso 🎧</string>
+						<string>Basso</string>
+					</array>
+					<array>
+						<string>Sosumi 📻</string>
+						<string>Sosumi</string>
+					</array>
+					<array>
+						<string>Glass 🍸</string>
+						<string>Glass</string>
+					</array>
+					<array>
+						<string>Blow 💨</string>
+						<string>Blow</string>
+					</array>
+					<array>
+						<string>Bottle 🍼</string>
+						<string>Bottle</string>
+					</array>
+					<array>
+						<string>Frog 🐸</string>
+						<string>Frog</string>
+					</array>
+					<array>
+						<string>Tink 🛎️</string>
+						<string>Tink</string>
+					</array>
+					<array>
+						<string>Morse ♨️</string>
+						<string>Morse</string>
+					</array>
+					<array>
+						<string>Classic 😃</string>
+						<string>default</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>workflow notification sound.</string>
+			<key>label</key>
+			<string>🎷 Notification sound</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>sound</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
+</dict>
+</plist>
