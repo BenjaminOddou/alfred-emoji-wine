@@ -60,7 +60,10 @@ try:
             keywords = None
             if keywords_list is not None and title is not None:
                 title = title.text
-                keywords = keywords_list.text.split(' | ')
+                if keywords_list.text == 'flag':
+                    keywords = title.replace(':', '').split(' ')
+                else:
+                    keywords = keywords_list.text.split(' | ')
                 break
         items.append({
             'name': name,
