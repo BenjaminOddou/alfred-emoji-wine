@@ -606,7 +606,7 @@
 				<key>subtext</key>
 				<string>Input the name of the tag</string>
 				<key>text</key>
-				<string>New Tag</string>
+				<string>New tag</string>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -1187,7 +1187,7 @@ note: not all emojis are available in all languages.</string>
 		</dict>
 	</array>
 	<key>version</key>
-	<string>1.1.0</string>
+	<string>1.1.1</string>
 	<key>webaddress</key>
 	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
 </dict>

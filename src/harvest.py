@@ -71,7 +71,7 @@ if api_data:
         if level == 1:
             for obj in [
                 {
-                    'title': 'Add a new Tag',
+                    'title': 'Add a new tag',
                     'subtitle': 'Create a new tag and assign it to emojis',
                     'arg': f'_tags;new;;;{"ǀ".join(lib)}',
                     'icon': {
@@ -93,7 +93,7 @@ if api_data:
                     list_emojis = ', '.join(obj['emojis'])
                     list_emojis = '❌ No Emojis' if list_emojis == '' else f'Emojis: {list_emojis}'
                     items.append({
-                        'title': obj.get('title', 'No Title'),
+                        'title': obj['title'] if obj['title'] is not '' else 'No Title',
                         'subtitle': list_emojis,
                         'arg': f'_rerun;modify;2;;{obj["id"]}',
                         'icon': {
@@ -106,7 +106,7 @@ if api_data:
                     list_emojis = ', '.join(obj.get('emojis'))
                     list_emojis = '❌ No Emojis' if list_emojis == '' else f'Emojis: {list_emojis}'
                     items.append({
-                        'title': obj.get('title', 'No Title'),
+                        'title': obj['title'] if obj['title'] is not '' else 'No Title',
                         'subtitle': list_emojis,
                         'arg': f'_tags;delete;;{obj["id"]};{"ǀ".join(lib)}',
                         'icon': {

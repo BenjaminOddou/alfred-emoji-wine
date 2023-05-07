@@ -17,7 +17,7 @@ if action == 'new':
     print(os.environ['split5'], end='')
     data.append({
         'id': secrets.token_hex(6),
-        'title': sys.argv[1],
+        'title': sys.argv[1].strip(),
         'emojis':[]
     })
 elif action == 'delete':
@@ -30,7 +30,7 @@ elif action == 'modify':
     print(os.environ['split6'], end='')
     for obj in data:
         if obj['id'] == tagID:
-            obj['title'] = sys.argv[1]
+            obj['title'] = sys.argv[1].strip()
             break
 elif action == 'emoji':
     print(os.environ['split6'], end='')
