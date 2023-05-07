@@ -18,11 +18,11 @@ Welcome to the Alfred Emoji Wine repository: **An Alfred Workflow** ✨
 This workflow combines multiple sources (see below) to build a local JSON API (`~/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.benjamino.emoji_wine`) along with an icons folder with base64 png images (≊1-4Ko per image).
 
 List of sources :
-* [Full list of latest emojis](https://unicode.org/Public/emoji/latest/emoji-test.txt) - Used to grab the full list of emojis
-* [Classic emojis images](https://unicode.org/emoji/charts/full-emoji-list.html) - Used to grab list of classic emojis images
-* [Skin Tone emojis images](https://unicode.org/emoji/charts/full-emoji-modifiers.html) -  Used to grab list of skin toned emojis images
-* [CLDR Data files annotations](https://github.com/unicode-org/cldr/tree/main/common/annotations) - Used to translate of emojis titles and keywords
-* [CLDR Data files annotations derived](https://github.com/unicode-org/cldr/tree/main/common/annotationsDerived) - Used to translate of emojis titles and keywords
+* [Full list of latest emojis](https://unicode.org/Public/emoji/latest/emoji-test.txt) - Used to grab the full list of emojis.
+* [Classic emojis images](https://unicode.org/emoji/charts/full-emoji-list.html) - Used to grab list of classic emojis images.
+* [Skin Tone emojis images](https://unicode.org/emoji/charts/full-emoji-modifiers.html) -  Used to grab list of skin toned emojis images.
+* [CLDR Data files annotations](https://github.com/unicode-org/cldr/tree/main/common/annotations) - Used to translate emojis titles and tags.
+* [CLDR Data files annotations derived](https://github.com/unicode-org/cldr/tree/main/common/annotationsDerived) - Used to translate emojis titles and tags.
 
 ## ⬇️ Installation
 
@@ -93,12 +93,26 @@ Trigger the workflow with `wine` keyword and search for an your emoji in the sel
 3. Press ⌥⏎ on the selected emoji to copy its shortcut name (`:wine_glass:` ⇒ 🍷).
 4. Press ⇧⏎ on the selected emoji to open its emojipedia page in the selected language.
 
-### Refresh the API
+### Refresh the API and configure tags
 
-Use the `harvest` keyword to display the local API info and to refresh it.
+> Use the `harvest` keyword.
+
+In the following menu you'll find :
+1. A button to refresh the API for the selected language.
+2. The Tags section for the selected language.
+3. The last API information with date and time of the last update, number of emojis and the language selected when the API was created.
 
 ![harvest](public/harvest.webp)
 
+Tags can be created and linked to one or multiple emojis.
+
+![tag](public/tag.webp)
+
+This allows to search emojis using custom words or phrases.
+
+![search_tag](public/search_tag.webp)
+
+> Tags are language specific meaning that when created they will impact only the selected language. They are also persistent overtime meaning that if you switch language or refresh the API, they will not be erased. Tags are stored under JSON files located in the `afred_workflow_data` folder (`~/Library/Application Support/Alfred/Workflow Data/com.benjamino.emoji_wine`).
 
 ## ⚖️ License
 

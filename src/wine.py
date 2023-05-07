@@ -1,36 +1,37 @@
 import json
-from utils import api, icons_folder_path, language
+from utils import config, api_file_path, tags_file_path, icons_folder_path, language
 
-data = api()
+api_data = config(api_file_path)
+tags_data = config(tags_file_path)
 items = []
 
-if data:
-    with open('json/lang.json') as file:
-        langs = json.load(file)
-    for item in langs:
-        if item["value"] == language:
-            lang = item["title"]
-            break
-    if language != data['info']['lang']['value']:
+with open('json/lang.json') as file:
+    langs = json.load(file)
+for item in langs:
+    if item["value"] == language:
+        lang = item["title"]
+        break
+
+if api_data:
+    if language != api_data['info']['lang']['value']:
         items.append({
             'title': 'Refresh the API',
-            'subtitle': f'Press ⏎ to grab emoji data using with language : {lang}',
+            'subtitle': f'Press ⏎ to grab emoji data with language : {lang}',
             'arg': '_api',
             'icon': {
                 'path': 'icons/info.webp',
             },
-            'mods': {
-                'cmd': {
-                    'subtitle': f'Press ⏎ to grab emoji data using with language : {lang}',
-                    'valid': False
-                }
-            },
         })
     else:
-        for item in data['items']:
-            name, emoji, title, keywords = item.get('name'), item.get('emoji'), item.get('title'), item.get('keywords')
+        for item in api_data['items']:
+            name, emoji, title, tags = item['name'], item['emoji'], item['title'], item['tags']
             second_name = name.replace(" ", "_").replace(":", "").lower()
-            match = " ".join(keywords) if keywords is not None else name
+            match = " ".join(tags) if tags is not None else name
+            if tags_data is not None:
+                for tag in tags_data:
+                    for tag_emoji in tag['emojis']:
+                        if tag_emoji == emoji:
+                            match += f' {tag["title"]}'
             if language == 'en':
                 title = name
             if title is not None:
@@ -74,7 +75,7 @@ if data:
 else:
     items.append({
         'title': 'No API detected',
-        'subtitle': 'Press ⏎ to grab emoji data from unicode.org',
+        'subtitle': f'Press ⏎ to grab emoji data with language : {lang}',
         'arg': '_api',
         'icon': {
             'path': 'icons/info.webp',
