@@ -25,7 +25,6 @@ if api_data:
     else:
         for item in api_data['items']:
             name, emoji, title, tags = item['name'], item['emoji'], item['title'], item['tags']
-            second_name = name.replace(" ", "_").replace(":", "").lower()
             match = " ".join(tags) if tags is not None else name
             if tags_data is not None:
                 for tag in tags_data:
@@ -53,10 +52,6 @@ if api_data:
                 'mods': {
                     'cmd': {
                         'subtitle': f'Paste "{emoji}" into frontmost application',
-                    },
-                    'alt': {
-                        'subtitle': f'Copy ":{second_name}:" to clipboard',
-                        'arg': f':{second_name}:'
                     },
                 },
             }

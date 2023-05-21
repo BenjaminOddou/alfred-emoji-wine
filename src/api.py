@@ -19,6 +19,8 @@ for folder in [data_folder_path, cache_folder_path, icons_folder_path]:
     if not os.path.exists(folder):
         os.mkdir(folder)
 
+check_e_type = ['flag:', 'keycap:']
+
 try:
     img_urls = ['https://unicode.org/emoji/charts/full-emoji-list.html', 'https://unicode.org/emoji/charts/full-emoji-modifiers.html']
     for url in img_urls:
@@ -60,7 +62,7 @@ try:
             tags = None
             if tags_list is not None and title is not None:
                 title = title.text
-                if 'flag:' in name:
+                if any(substring in name for substring in check_e_type):
                     tags = title.replace(':', '').split(' ')
                     for i in range(len(tags)):
                         tags[i] = tags[i].strip()
