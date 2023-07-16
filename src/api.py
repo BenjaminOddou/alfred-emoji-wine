@@ -1,44 +1,34 @@
 import os
 import re
 import sys
-sys.path.insert(0, './lib')
-import base64
 import json
-import time
 import datetime
-from bs4 import BeautifulSoup
-from io import BytesIO
 from urllib import request
+sys.path.insert(0, './lib')
 import xml.etree.ElementTree as ET
-from utils import api_file_path, cache_folder_path, data_folder_path, icons_folder_path, display_notification, language
+from PIL import Image, ImageDraw, ImageFont
+from utils import api_file_path, data_folder_path, icons_folder_path, display_notification, language
 
 display_notification('⏳ Please wait !', 'Emojis data is beeing gathered, this can take some time...')
-time.sleep(0.2)
 
-for folder in [data_folder_path, cache_folder_path, icons_folder_path]:
+for folder in [data_folder_path, icons_folder_path]:
     if not os.path.exists(folder):
         os.mkdir(folder)
 
 check_e_type = ['flag:', 'keycap:']
 
-try:
-    img_urls = ['https://unicode.org/emoji/charts/full-emoji-list.html', 'https://unicode.org/emoji/charts/full-emoji-modifiers.html']
-    for url in img_urls:
-        img_response = request.urlopen(url).read().decode('utf-8')
-        soup = BeautifulSoup(img_response, 'html.parser')
-        rows = soup.find_all('tr')
-        for row in rows[1:]:
-            cols = row.find_all('td')
-            if cols:
-                img_tag = cols[3].find('img')
-                if img_tag:
-                    img_src = img_tag.get('src').split(',')[1]
-                    img_data = BytesIO(base64.b64decode(img_src))
-                    file_name = f'{cols[-1].text.replace("⊛", "").replace(":", "").strip()}.png'
-                    file_path = os.path.join(icons_folder_path, file_name)
-                    with open(file_path, 'wb') as file:
-                        file.write(img_data.getvalue())
+def convert_emoji_to_png(emoji, name):
+    image_size = (128, 128)
+    image = Image.new("RGBA", image_size, (0, 0, 0, 0))  # Set transparent background
+    font_size = 64  # Adjusted font size
+    font_path = "/System/Library/Fonts/Apple Color Emoji.ttc"
+    font = ImageFont.truetype(font_path, font_size, encoding='unic')
+    draw_position = (int((image_size[0] - font_size) / 2), int((image_size[1] - font_size) / 2))
+    draw = ImageDraw.Draw(image)
+    draw.text(draw_position, emoji, font=font, embedded_color=True)
+    image.save(f"{icons_folder_path}/{name.replace(':', '')}.png", "PNG")
 
+try:
     api_url = 'https://unicode.org/Public/emoji/latest/emoji-test.txt'
     api_response = request.urlopen(api_url).read().decode('utf-8')
     lines = [line.strip() for line in api_response.split('\n') if ('; fully-qualified' in line) or ('; component' in line)]
@@ -75,6 +65,7 @@ try:
             'title': title,
             'tags': tags
         })
+        convert_emoji_to_png(emoji, name)
 
     with open('json/lang.json') as file:
         langs = json.load(file)

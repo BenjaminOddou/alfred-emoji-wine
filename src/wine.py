@@ -1,3 +1,4 @@
+import re
 import json
 from utils import config, api_file_path, tags_file_path, icons_folder_path, language
 
@@ -34,7 +35,8 @@ if api_data:
             if language == 'en':
                 title = name
             if title is not None:
-                url = title.replace(":", "").replace(" ", "-").replace(" ", "").lower()
+                url = re.sub(r'[:(), ]', '', title)
+                url = re.sub(r'[’ ]', '-', url).lower()
             else:
                 title = name
                 url = None

@@ -802,11 +802,11 @@
 
 * MacOS.
 * Alfred 5. Note that the [Alfred Powerpack](https://www.alfredapp.com/powerpack/) is required to use workflows.
-* Requires **python 3.7** or above.
+* Requires **python 3.8** or above.
 
 ## 🧰 Setup the workflow
 
-Install Python 3.7 or above. Check your version with :
+Install Python 3.8 or above. Check your version with :
 
 `python --version`
 
@@ -1187,7 +1187,7 @@ note: not all emojis are available in all languages.</string>
 		</dict>
 	</array>
 	<key>version</key>
-	<string>1.1.2</string>
+	<string>1.2.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
 </dict>

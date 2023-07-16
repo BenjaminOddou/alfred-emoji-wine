@@ -14,7 +14,10 @@ if lib is not None:
     action, level, subaction, kID = lib[1], int(lib[2]), lib[3], lib[4]
 
 if tags_data is None:
-    os.mkdir(data_folder_path)
+    try:
+        os.mkdir(data_folder_path)
+    except:
+        pass
     with open(tags_file_path, 'w') as file:
         json.dump([], file)
 
@@ -93,7 +96,7 @@ if api_data:
                     list_emojis = ', '.join(obj['emojis'])
                     list_emojis = '❌ No Emojis' if list_emojis == '' else f'Emojis: {list_emojis}'
                     items.append({
-                        'title': obj['title'] if obj['title'] is not '' else 'No Title',
+                        'title': obj['title'] if obj['title'] != '' else 'No Title',
                         'subtitle': list_emojis,
                         'arg': f'_rerun;modify;2;;{obj["id"]}',
                         'icon': {
@@ -106,7 +109,7 @@ if api_data:
                     list_emojis = ', '.join(obj.get('emojis'))
                     list_emojis = '❌ No Emojis' if list_emojis == '' else f'Emojis: {list_emojis}'
                     items.append({
-                        'title': obj['title'] if obj['title'] is not '' else 'No Title',
+                        'title': obj['title'] if obj['title'] != '' else 'No Title',
                         'subtitle': list_emojis,
                         'arg': f'_tags;delete;;{obj["id"]};{"ǀ".join(lib)}',
                         'icon': {

@@ -3,7 +3,7 @@
 
 [![made with heart by Benjamin Oddou](https://img.shields.io/badge/made%20with%20%E2%99%A5%20by-benjamin%20oddou-ff2f35.svg?style=flat)](https://github.com/BenjaminOddou)
 [![saythanks](https://img.shields.io/badge/say-thanks-bf0001.svg?style=flat)](https://saythanks.io/to/BenjaminOddou)
-[![Python 3.7+](https://img.shields.io/badge/python-3.7+-7f0000.svg)](https://www.python.org/downloads/macos/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-7f0000.svg)](https://www.python.org/downloads/macos/)
 
 Welcome to the Alfred Emoji Wine repository: **An Alfred Workflow** ✨
 
@@ -11,16 +11,14 @@ Welcome to the Alfred Emoji Wine repository: **An Alfred Workflow** ✨
 
 * MacOS.
 * Alfred 5. Note that the [Alfred Powerpack](https://www.alfredapp.com/powerpack/) is required to use workflows.
-* Requires **python 3.7** or above.
+* Requires **python 3.8** or above.
 
 ## 🏎️ Data sources
 
-This workflow combines multiple sources (see below) to build a local JSON API (`~/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.benjamino.emoji_wine`) along with an icons folder with base64 png images (≊1-4Ko per image).
+This workflow combines multiple sources (see below) to build a local JSON API (`~/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.benjamino.emoji_wine`) along with an icons folder with png images.
 
 List of sources :
 * [Full list of latest emojis](https://unicode.org/Public/emoji/latest/emoji-test.txt) - Used to grab the full list of emojis.
-* [Classic emojis images](https://unicode.org/emoji/charts/full-emoji-list.html) - Used to grab list of classic emojis images.
-* [Skin Tone emojis images](https://unicode.org/emoji/charts/full-emoji-modifiers.html) -  Used to grab list of skin toned emojis images.
 * [CLDR Data files annotations](https://github.com/unicode-org/cldr/tree/main/common/annotations) - Used to translate emojis titles and tags.
 * [CLDR Data files annotations derived](https://github.com/unicode-org/cldr/tree/main/common/annotationsDerived) - Used to translate emojis titles and tags.
 
@@ -31,7 +29,7 @@ List of sources :
 
 ## 🧰 Setup the workflow
 
-Install Python 3.7 or above. Check your version with :
+Install Python 3.8 or above. Check your version with :
 
 ```shell
 python --version
