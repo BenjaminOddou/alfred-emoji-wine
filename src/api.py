@@ -1,10 +1,8 @@
 import os
 import re
-import sys
 import json
 import datetime
 from urllib import request
-sys.path.insert(0, './lib')
 import xml.etree.ElementTree as ET
 from PIL import Image, ImageDraw, ImageFont
 from utils import api_file_path, data_folder_path, icons_folder_path, display_notification, language

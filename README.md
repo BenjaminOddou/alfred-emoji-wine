@@ -35,6 +35,12 @@ Install Python 3.8 or above. Check your version with :
 python --version
 ```
 
+Install [pillow](https://formulae.brew.sh/formula/pillowusing) Homebrew :
+
+```shell
+brew install pillow
+```
+
 ## 🧙‍♂️ Invoke the workflow
 
 There is 2 flows in this workflow :
