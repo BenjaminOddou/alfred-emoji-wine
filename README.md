@@ -35,7 +35,7 @@ Install Python 3.8 or above. Check your version with :
 python --version
 ```
 
-Install [pillow](https://formulae.brew.sh/formula/pillowusing) Homebrew :
+Install [pillow](https://formulae.brew.sh/formula/pillow) using Homebrew :
 
 ```shell
 brew install pillow
