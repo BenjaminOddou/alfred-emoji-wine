@@ -92,9 +92,9 @@ Trigger the workflow with `wine` keyword and search for an your emoji in the sel
 
 ### Workflow actions
 
-1. Press ⏎ on the selected emoji to copy it to the clipboard.
-2. Press ⌘⏎ on the selected emoji to paste it to the frontmost application.
-3. Press ⇧⏎ on the selected emoji to open its emojipedia page in the selected language.
+1. Press <kbd>⏎</kbd> on the selected emoji to copy it to the clipboard.
+2. Press <kbd>⌘</kbd><kbd>⏎</kbd> on the selected emoji to paste it to the frontmost application.
+3. Press <kbd>⇧</kbd><kbd>⏎</kbd> on the selected emoji to open its emojipedia page in the selected language.
 
 ### Refresh the API and configure tags
 
