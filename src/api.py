@@ -1,20 +1,36 @@
 import os
 import sys
+import subprocess
 from utils import api_file_path, data_folder_path, icons_folder_path, display_notification, language
-python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
-pillow_dir = '/usr/local/Cellar/pillow'
-try:
-    latest_version = max(os.listdir(pillow_dir))
-except:
-    display_notification('🚨 Error !', 'Pillow is not detected, install it using homebrew')
-pillow_path = os.path.join(pillow_dir, latest_version, f'lib/python{python_version}/site-packages')
-sys.path.append(pillow_path)
+def get_homebrew_prefix():
+    try:
+        prefix = subprocess.check_output(['brew', '--prefix'])
+        return prefix
+    except:
+        return None
+
+homebrew_prefix = get_homebrew_prefix()
+
+if homebrew_prefix:
+    python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
+    pillow_dir = f'{homebrew_prefix}/Cellar/pillow'
+    try:
+        latest_version = max(os.listdir(pillow_dir))
+        pillow_path = os.path.join(pillow_dir, latest_version, f'lib/python{python_version}/site-packages')
+        sys.path.append(pillow_path)
+    except:
+        pass
+
 import re
 import json
 import datetime
 from urllib import request
 import xml.etree.ElementTree as ET
-from PIL import Image, ImageDraw, ImageFont
+try:
+    from PIL import Image, ImageDraw, ImageFont
+except:
+    display_notification('🚨 Error !', 'Pillow is not detected, check the documentation to install it')
+    exit()
 
 display_notification('⏳ Please wait !', 'Emojis data is beeing gathered, this can take some time...')
 
