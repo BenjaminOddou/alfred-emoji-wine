@@ -3,6 +3,10 @@ import json
 
 sound = os.environ['sound']
 language = os.environ['language']
+try:
+    padding = int(os.environ['padding'])
+except:
+    padding = 10
 cache_folder_path = os.environ['alfred_workflow_cache'] # ~/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.benjamino.emoji_wine
 data_folder_path = os.environ['alfred_workflow_data'] # ~/Library/Application Support/Alfred/Workflow Data/com.benjamino.emoji_wine
 api_file_path = f'{cache_folder_path}/api.json'

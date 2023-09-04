@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from utils import api_file_path, data_folder_path, icons_folder_path, display_notification, language
+from utils import api_file_path, data_folder_path, icons_folder_path, display_notification, language, padding
 def get_homebrew_prefix():
     try:
         prefix = subprocess.check_output(['brew', '--prefix'])
@@ -41,7 +41,7 @@ for folder in [data_folder_path, icons_folder_path]:
 check_e_type = ['flag:', 'keycap:']
 
 def convert_emoji_to_png(emoji, name):
-    image_size = (128, 128)
+    image_size = (64+padding, 64+padding) # set image size
     image = Image.new("RGBA", image_size, (0, 0, 0, 0))  # Set transparent background
     font_size = 64  # Adjusted font size
     font_path = "/System/Library/Fonts/Apple Color Emoji.ttc"
@@ -55,7 +55,7 @@ try:
     api_url = 'https://unicode.org/Public/emoji/latest/emoji-test.txt'
     api_response = request.urlopen(api_url).read().decode('utf-8')
     lines = [line.strip() for line in api_response.split('\n') if ('; fully-qualified' in line) or ('; component' in line)]
-    
+
     lang_url_1 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations/{language}.xml'
     lang_url_2 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived/{language}.xml'
     lang_response_1 = request.urlopen(lang_url_1).read().decode('utf-8')
