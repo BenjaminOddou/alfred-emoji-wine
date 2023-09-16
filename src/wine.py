@@ -64,7 +64,7 @@ if api_data:
                         'subtitle': 'Find the emoji in emojipedia',
                         'arg': f'_web;{country}/{url}',
                         'icon': {
-                            'path': 'icons/emojipedia.webp',
+                            'path': f'{icons_folder_path}/emojipedia.png',
                         },
                     }
                 })

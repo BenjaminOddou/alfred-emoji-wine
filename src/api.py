@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from utils import api_file_path, data_folder_path, icons_folder_path, display_notification, language, padding
+from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding
 def get_homebrew_prefix():
     try:
         prefix = subprocess.check_output(['brew', '--prefix'])
@@ -41,7 +41,7 @@ for folder in [data_folder_path, icons_folder_path]:
 check_e_type = ['flag:', 'keycap:']
 
 def convert_emoji_to_png(emoji, name):
-    image_size = (64+padding, 64+padding) # set image size
+    image_size = (64 + padding, 64 + padding) # set image size
     image = Image.new("RGBA", image_size, (0, 0, 0, 0))  # Set transparent background
     font_size = 64  # Adjusted font size
     font_path = "/System/Library/Fonts/Apple Color Emoji.ttc"
@@ -99,6 +99,17 @@ try:
     info = {'time': datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"), 'lang': {'title': lang, 'value': language}}
     with open(api_file_path, 'w', encoding='utf-8') as file:
         json.dump({'info': info, 'items': items}, file, ensure_ascii=False, indent=4)
+
+    assets = [f for f in os.listdir(assets_folder_path)]
+
+    for i in assets:
+        image_path = os.path.join(assets_folder_path, i)
+        image = Image.open(image_path)
+        width, height = image.size
+        new_image = Image.new("RGBA", (width + padding, height + padding), (0, 0, 0, 0))
+        new_image.paste(image, (int(padding / 2), int(padding / 2)))
+        output_path = os.path.join(icons_folder_path, i)
+        new_image.save(output_path)
 
     display_notification('✅ Success !', 'Data updated. You can search emojis')
 except:

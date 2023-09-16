@@ -1209,8 +1209,10 @@ note: not all emojis are available in all languages.</string>
 			<string>sound</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
-	<string>1.2.4</string>
+	<string>1.2.5</string>
 	<key>webaddress</key>
 	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
 </dict>
