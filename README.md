@@ -12,6 +12,7 @@ Welcome to the Alfred Emoji Wine repository: **An Alfred Workflow** ✨
 * MacOS.
 * Alfred 5. Note that the [Alfred Powerpack](https://www.alfredapp.com/powerpack/) is required to use workflows.
 * Requires **python 3.8** or above.
+* Requires [pillow](https://formulae.brew.sh/formula/pillow) library.
 
 ## 🏎️ Data sources
 
