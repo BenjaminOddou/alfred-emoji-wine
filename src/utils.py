@@ -1,5 +1,6 @@
 import os
 import json
+import logging as log
 
 sound = os.environ['sound']
 language = os.environ['language']
@@ -24,3 +25,20 @@ def config(path: str):
         return None
     with open(path, 'r') as file:
         return json.load(file)
+
+# Init logger
+logger = log.getLogger('plex')
+logger.setLevel(log.DEBUG)
+log_file_handler = log.FileHandler(os.path.join(cache_folder_path, f'emoji_wine.log'))
+log_file_handler.setLevel(log.DEBUG)
+log_formatter = log.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+log_file_handler.setFormatter(log_formatter)
+logger.addHandler(log_file_handler)
+
+def custom_logger(level: str, message: str):
+    if level == 'info':
+        logger.info(message)
+    elif level == 'warning':
+        logger.warning(message)
+    elif level == 'error':
+        logger.error(message)

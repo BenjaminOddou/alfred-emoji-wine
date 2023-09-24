@@ -1,7 +1,8 @@
 import os
 import sys
 import subprocess
-from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding
+from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding, custom_logger
+
 def get_homebrew_prefix():
     try:
         prefix = subprocess.check_output(['brew', '--prefix'])
@@ -28,8 +29,9 @@ from urllib import request
 import xml.etree.ElementTree as ET
 try:
     from PIL import Image, ImageDraw, ImageFont
-except:
+except Exception as e:
     display_notification('🚨 Error !', 'Pillow is not detected, check the documentation to install it')
+    custom_logger('error', e)
     exit()
 
 display_notification('⏳ Please wait !', 'Emojis data is beeing gathered, this can take some time...')
@@ -112,5 +114,7 @@ try:
         new_image.save(output_path)
 
     display_notification('✅ Success !', 'Data updated. You can search emojis')
-except:
-    display_notification('🚨 Error !', 'Something went wrong, check your internet connexion or create a GitHub issue')
+    custom_logger('info', f'API refreshed with language : {language}')
+except Exception as e:
+    display_notification('🚨 Error !', 'Something went wrong, check the logs and create a GitHub issue')
+    custom_logger('error', e)

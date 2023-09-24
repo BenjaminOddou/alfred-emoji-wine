@@ -2,7 +2,7 @@ import os
 import json
 import sys
 import secrets
-from utils import config, api_file_path, tags_file_path, display_notification
+from utils import config, api_file_path, tags_file_path, display_notification, custom_logger
 
 action = os.environ['split2']
 subaction = os.environ['split3']
@@ -46,7 +46,8 @@ elif action == 'emoji':
                 obj['emojis'].remove(os.environ['split5'])
                 break
 else:
-    display_notification('🚨 Error !', 'Something went wrong, report it as a GitHub issue')
+    display_notification('🚨 Error !', 'Something went wrong, check the logs and report it as a GitHub issue')
+    custom_logger('error', 'The action os.environ["split2"] is not in the following list {new, delete, modify, emoji}')
     exit()
 
 with open(tags_file_path, 'w', encoding='utf-8') as file:
