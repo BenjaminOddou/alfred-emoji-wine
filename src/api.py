@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding, custom_logger
+from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding, custom_logger, langs
 
 def get_homebrew_prefix():
     try:
@@ -83,6 +83,7 @@ try:
                         tags[i] = tags[i].strip()
                 else:
                     tags = tags_list.text.split(' | ')
+                tags.append(emoji)
                 break
         items.append({
             'name': name,
@@ -92,8 +93,6 @@ try:
         })
         convert_emoji_to_png(emoji, name)
 
-    with open('json/lang.json') as file:
-        langs = json.load(file)
     for item in langs:
         if item["value"] == language:
             lang = item["title"]

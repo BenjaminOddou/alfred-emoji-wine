@@ -1,6 +1,21 @@
 import os
 import json
 import logging as log
+import xml.etree.ElementTree as ET
+
+def langs_dict(xml_file):
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+    languages = []
+    array = root.find(".//dict[string='🌐 Language']/dict/array")
+    for node in array:
+        title = node.find("string[1]").text
+        value = node.find("string[2]").text
+        languages.append({"title": title, "value": value})
+    return languages
+
+# Langs dict
+langs = langs_dict('info.plist')
 
 sound = os.environ['sound']
 language = os.environ['language']
@@ -16,6 +31,7 @@ assets_folder_path = f'{os.getcwd()}/icons/assets'
 api_file_path = f'{cache_folder_path}/api.json'
 tags_file_path = f'{data_folder_path}/tags-{language}.json'
 icons_folder_path = f'{cache_folder_path}/icons'
+emoji_dictionary = os.environ['emoji_dictionary'] # https://emojipedia.org
 
 def display_notification(title: str, message: str):
     title = title.replace('"', '\\"')

@@ -1,13 +1,11 @@
 import re
 import json
-from utils import config, api_file_path, tags_file_path, icons_folder_path, language
+from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs
 
 api_data = config(api_file_path)
 tags_data = config(tags_file_path)
 items = []
 
-with open('json/lang.json') as file:
-    langs = json.load(file)
 for item in langs:
     if item["value"] == language:
         lang = item["title"]
@@ -34,13 +32,13 @@ if api_data:
                             match += f' {tag["title"]}'
             if language == 'en':
                 title = name
-            if title is not None:
+            if emoji_dictionary == 'emojiall.com':
+                url = f'emoji/{emoji}'
+            elif title is not None:
                 url = re.sub(r'[:(), ]', '', title)
                 url = re.sub(r'[’ ]', '-', url).lower()
             else:
                 title = name
-                url = None
-            if language in ['hi', 'mr', 'te', 'bn', 'ta']:
                 url = None
             elem = {
                 'uid': name,
@@ -58,13 +56,13 @@ if api_data:
                 },
             }
             if url is not None:
-                country = f'{language}' if language != 'en' else ''
+                country = f'{language}/' if language != 'en' else ''
                 elem['mods'].update({
                     'shift': {
-                        'subtitle': 'Find the emoji in emojipedia',
-                        'arg': f'_web;{country}/{url}',
+                        'subtitle': f'Find the emoji in {emoji_dictionary}',
+                        'arg': f'_web;https://{emoji_dictionary}/{country}{url}',
                         'icon': {
-                            'path': f'{icons_folder_path}/emojipedia.png',
+                            'path': f'{icons_folder_path}/{emoji_dictionary.split(".")[0]}.png',
                         },
                     }
                 })

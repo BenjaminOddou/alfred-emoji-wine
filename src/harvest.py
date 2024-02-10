@@ -1,6 +1,6 @@
 import os
 import json
-from utils import config, api_file_path, tags_file_path, icons_folder_path, language, data_folder_path
+from utils import config, api_file_path, tags_file_path, icons_folder_path, language, data_folder_path, langs
 
 api_data = config(api_file_path)
 tags_data = config(tags_file_path)
@@ -21,8 +21,6 @@ if tags_data is None:
     with open(tags_file_path, 'w') as file:
         json.dump([], file)
 
-with open('json/lang.json') as file:
-    langs = json.load(file)
 for item in langs:
     if item["value"] == language:
         lang = item["title"]
