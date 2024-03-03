@@ -25,6 +25,7 @@ except:
     padding = 10
 cache_folder_path = os.environ['alfred_workflow_cache'] # ~/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.benjamino.emoji_wine
 data_folder_path = os.environ['alfred_workflow_data'] # ~/Library/Application Support/Alfred/Workflow Data/com.benjamino.emoji_wine
+workflow_version = os.environ['alfred_workflow_version']
 for folder in [cache_folder_path, data_folder_path]:
     os.makedirs(folder, exist_ok=True)
 assets_folder_path = f'{os.getcwd()}/icons/assets'

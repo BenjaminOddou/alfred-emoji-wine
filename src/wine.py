@@ -1,6 +1,6 @@
 import re
 import json
-from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs
+from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs, workflow_version
 
 api_data = config(api_file_path)
 tags_data = config(tags_file_path)
@@ -12,7 +12,7 @@ for item in langs:
         break
 
 if api_data:
-    if language != api_data['info']['lang']['value']:
+    if language != api_data['info']['lang']['value'] or workflow_version != api_data['info'].get('workflow_version'):
         items.append({
             'title': 'Refresh the API',
             'subtitle': f'Press ⏎ to grab emoji data with language : {lang}',
@@ -23,7 +23,7 @@ if api_data:
         })
     else:
         for item in api_data['items']:
-            name, emoji, title, tags = item['name'], item['emoji'], item['title'], item['tags']
+            name, emoji, title, tags, image = item['name'], item['emoji'], item['title'], item['tags'], item['image']
             match = " ".join(tags) if tags is not None else name
             if tags_data is not None:
                 for tag in tags_data:
@@ -40,6 +40,7 @@ if api_data:
             else:
                 title = name
                 url = None
+            icon_path = f'{icons_folder_path}/{name.replace(":", "")}.png' if image else f'{icons_folder_path}/unicode.png'
             elem = {
                 'uid': name,
                 'title': title,
@@ -47,7 +48,7 @@ if api_data:
                 'arg': emoji,
                 'match': match,
                 'icon': {
-                    'path': f'{icons_folder_path}/{name.replace(":", "")}.png',
+                    'path': icon_path,
                 },
                 'mods': {
                     'cmd': {

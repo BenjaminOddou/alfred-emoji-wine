@@ -1,7 +1,8 @@
 import os
 import sys
+import shutil
 import subprocess
-from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding, custom_logger, langs
+from utils import api_file_path, data_folder_path, icons_folder_path, assets_folder_path, display_notification, language, padding, custom_logger, langs, workflow_version
 
 def get_homebrew_prefix():
     try:
@@ -36,9 +37,13 @@ except Exception as e:
 
 display_notification('⏳ Please wait !', 'Emojis data is beeing gathered, this can take some time...')
 
-for folder in [data_folder_path, icons_folder_path]:
-    if not os.path.exists(folder):
-        os.mkdir(folder)
+if os.path.exists(icons_folder_path):
+    shutil.rmtree(icons_folder_path)
+
+os.mkdir(icons_folder_path)
+
+if not os.path.exists(data_folder_path):
+    os.mkdir(data_folder_path)
 
 check_e_type = ['flag:', 'keycap:']
 
@@ -85,19 +90,25 @@ try:
                     tags = tags_list.text.split(' | ')
                 tags.append(emoji)
                 break
+        try:
+            convert_emoji_to_png(emoji, name)
+            image = True
+        except Exception as e:
+            custom_logger('error', f'{emoji} cannot be transform into an image, {e}')
+            image = False
         items.append({
             'name': name,
             'emoji': emoji,
             'title': title,
-            'tags': tags
+            'tags': tags,
+            'image': image
         })
-        convert_emoji_to_png(emoji, name)
 
     for item in langs:
         if item["value"] == language:
             lang = item["title"]
             break
-    info = {'time': datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"), 'lang': {'title': lang, 'value': language}}
+    info = {'time': datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"), 'lang': {'title': lang, 'value': language}, 'workflow_version': workflow_version}
     with open(api_file_path, 'w', encoding='utf-8') as file:
         json.dump({'info': info, 'items': items}, file, ensure_ascii=False, indent=4)
 
