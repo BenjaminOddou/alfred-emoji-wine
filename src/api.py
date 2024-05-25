@@ -58,6 +58,33 @@ def convert_emoji_to_png(emoji, name):
     draw.text(draw_position, emoji, font=font, embedded_color=True)
     image.save(f"{icons_folder_path}/{name.replace(':', '')}.png", "PNG")
 
+def remove_skin_tones(emoji):
+    skin_tone_range = range(0x1F3FB, 0x1F3FF + 1)
+    clean_emoji = ''.join([char for char in emoji if ord(char) not in skin_tone_range])
+    return clean_emoji
+
+def get_skin_tones(emoji):
+    skin_tones = []
+    if emoji in cleaned_emojis:
+        skin_tones.append('none')
+    else:
+        skin_tone_dict = {
+            0x1F3FB: "light skin tone",
+            0x1F3FC: "medium-light skin tone",
+            0x1F3FD: "medium skin tone",
+            0x1F3FE: "medium-dark skin tone",
+            0x1F3FF: "dark skin tone"
+        }
+        for char in emoji:
+            value_skin_tone = skin_tone_dict.get(ord(char))
+            if value_skin_tone:
+                skin_tones.append(value_skin_tone)
+        if not skin_tones:
+            skin_tones.append('base')
+    return list(set(skin_tones))
+
+skin_tones = ["light skin tone", "medium-light skin tone", "medium skin tone", "medium-dark skin tone", "dark skin tone"]
+
 try:
     api_url = 'https://unicode.org/Public/emoji/latest/emoji-test.txt'
     api_response = request.urlopen(api_url).read().decode('utf-8')
@@ -72,9 +99,19 @@ try:
     root.extend(ET.fromstring(lang_response_2))
 
     items = []
+    cleaned_emojis = []
+    full_emojis = []
+
     for line in lines:
         array = re.split(r'\bfully-qualified\b|\bcomponent\b', line)[1].strip().split(' ', 3)
         emoji, name = array[1], array[-1]
+        full_emojis.append({"emoji": emoji, "name": name})
+        clean_emoji = remove_skin_tones(emoji)
+        if emoji != clean_emoji:
+            cleaned_emojis.append(clean_emoji)
+    
+    for obj in full_emojis:
+        emoji, name = obj['emoji'], obj['name']
         trim_emoji = re.sub('\uFE0F', '', emoji)
         for elem in root:
             tags_list = elem.find(f"./annotation[@cp='{trim_emoji}']")
@@ -101,7 +138,8 @@ try:
             'emoji': emoji,
             'title': title,
             'tags': tags,
-            'image': image
+            'image': image,
+            'skin_tones': get_skin_tones(emoji)
         })
 
     for item in langs:

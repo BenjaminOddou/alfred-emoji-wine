@@ -1160,6 +1160,52 @@ note: not all emojis are available in all languages.</string>
 			<key>config</key>
 			<dict>
 				<key>default</key>
+				<string>all</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>🎨 All</string>
+						<string>all</string>
+					</array>
+					<array>
+						<string>👋 None</string>
+						<string>none</string>
+					</array>
+					<array>
+						<string>👋🏻 Light</string>
+						<string>light skin tone</string>
+					</array>
+					<array>
+						<string>👋🏼 Medium-Light</string>
+						<string>medium-light skin tone</string>
+					</array>
+					<array>
+						<string>👋🏽 Medium</string>
+						<string>medium skin tone</string>
+					</array>
+					<array>
+						<string>👋🏾 Medium-Dark</string>
+						<string>medium-dark skin tone</string>
+					</array>
+					<array>
+						<string>👋🏿 Dark</string>
+						<string>dark skin tone</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>preferred skin tone.</string>
+			<key>label</key>
+			<string>🌈 Skin Tone</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>skin_tone</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
 				<string>Submarine</string>
 				<key>pairs</key>
 				<array>
@@ -1239,8 +1285,10 @@ note: not all emojis are available in all languages.</string>
 			<string>sound</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
-	<string>1.4.0</string>
+	<string>1.5.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
 </dict>

@@ -19,6 +19,7 @@ langs = langs_dict('info.plist')
 
 sound = os.environ['sound']
 language = os.environ['language']
+skin_tone = os.environ['skin_tone']
 try:
     padding = int(os.environ['padding'])
 except:

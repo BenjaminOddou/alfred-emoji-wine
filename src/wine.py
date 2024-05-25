@@ -1,6 +1,6 @@
 import re
 import json
-from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs, workflow_version
+from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs, workflow_version, skin_tone
 
 api_data = config(api_file_path)
 tags_data = config(tags_file_path)
@@ -23,7 +23,7 @@ if api_data:
         })
     else:
         for item in api_data['items']:
-            name, emoji, title, tags, image = item['name'], item['emoji'], item['title'], item['tags'], item['image']
+            name, emoji, title, tags, image, skin_tones = item['name'], item['emoji'], item['title'], item['tags'], item['image'], item['skin_tones']
             match = " ".join(tags) if tags is not None else name
             if tags_data is not None:
                 for tag in tags_data:
@@ -67,7 +67,8 @@ if api_data:
                         },
                     }
                 })
-            items.append(elem)
+            if skin_tone in skin_tones or 'base' in skin_tones or skin_tone == 'all':
+                items.append(elem)
 else:
     items.append({
         'title': 'No API detected',

@@ -87,7 +87,9 @@ If you wish to use another language, open a GitHub issue [here](https://github.c
 
 3. `📖 Emoji Dictionary` : Select your online emoji dictionary.
 
-4. `🎷 Notification sound` : personalize the sound of the workflow notification.
+4. `🌈 Skin Tone` : Select your preferred skin tone.
+
+5. `🎷 Notification sound` : Personalize the sound of the workflow notification.
 
 ### Search an emoji
 
