@@ -24,7 +24,7 @@ if api_data:
     else:
         for item in api_data['items']:
             name, emoji, title, tags, image, skin_tones = item['name'], item['emoji'], item['title'], item['tags'], item['image'], item['skin_tones']
-            match = " ".join(tags) if tags is not None else name
+            match = " ".join([title] + tags) if tags is not None else name
             if tags_data is not None:
                 for tag in tags_data:
                     for tag_emoji in tag['emojis']:
