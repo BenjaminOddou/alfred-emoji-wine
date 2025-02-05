@@ -14,7 +14,7 @@ def get_homebrew_prefix():
 homebrew_prefix = get_homebrew_prefix()
 
 if homebrew_prefix:
-    python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
+    python_version = f'{sys.version_info.major}.{sys.version_info.minor}'
     pillow_dir = f'{homebrew_prefix}/Cellar/pillow'
     try:
         latest_version = max(os.listdir(pillow_dir))
@@ -47,16 +47,36 @@ if not os.path.exists(data_folder_path):
 
 check_e_type = ['flag:', 'keycap:']
 
+def is_blank_image(image):
+    """Efficiently checks if an image is blank (fully transparent or one solid color)."""
+    pixels = image.getdata()
+    first_pixel = next(iter(pixels))  # Get the first pixel without loading all into memory
+
+    all_same = True
+    all_transparent = True
+
+    for pixel in pixels:
+        if pixel != first_pixel:
+            all_same = False
+        if pixel[3] != 0:  # Check transparency (alpha channel)
+            all_transparent = False
+        if not all_same and not all_transparent:
+            return False  # Exit early if image is neither blank nor fully transparent
+
+    return all_same or all_transparent  # Returns True if either condition is met
+
 def convert_emoji_to_png(emoji, name):
     image_size = (64 + padding, 64 + padding) # set image size
-    image = Image.new("RGBA", image_size, (0, 0, 0, 0))  # Set transparent background
+    image = Image.new('RGBA', image_size, (0, 0, 0, 0))  # Set transparent background
     font_size = 64  # Adjusted font size
-    font_path = "/System/Library/Fonts/Apple Color Emoji.ttc"
+    font_path = '/System/Library/Fonts/Apple Color Emoji.ttc'
     font = ImageFont.truetype(font_path, font_size, encoding='unic')
     draw_position = (int((image_size[0] - font_size) / 2), int((image_size[1] - font_size) / 2))
     draw = ImageDraw.Draw(image)
     draw.text(draw_position, emoji, font=font, embedded_color=True)
-    image.save(f"{icons_folder_path}/{name.replace(':', '')}.png", "PNG")
+    if is_blank_image(image):
+        raise ValueError(f"Generated image for '{emoji}' is blank or unsupported.")
+    image.save(f'{icons_folder_path}/{name.replace(':', '')}.png', 'PNG')
 
 def remove_skin_tones(emoji):
     skin_tone_range = range(0x1F3FB, 0x1F3FF + 1)
@@ -69,11 +89,11 @@ def get_skin_tones(emoji):
         skin_tones.append('none')
     else:
         skin_tone_dict = {
-            0x1F3FB: "light skin tone",
-            0x1F3FC: "medium-light skin tone",
-            0x1F3FD: "medium skin tone",
-            0x1F3FE: "medium-dark skin tone",
-            0x1F3FF: "dark skin tone"
+            0x1F3FB: 'light skin tone',
+            0x1F3FC: 'medium-light skin tone',
+            0x1F3FD: 'medium skin tone',
+            0x1F3FE: 'medium-dark skin tone',
+            0x1F3FF: 'dark skin tone'
         }
         for char in emoji:
             value_skin_tone = skin_tone_dict.get(ord(char))
@@ -83,15 +103,15 @@ def get_skin_tones(emoji):
             skin_tones.append('base')
     return list(set(skin_tones))
 
-skin_tones = ["light skin tone", "medium-light skin tone", "medium skin tone", "medium-dark skin tone", "dark skin tone"]
+skin_tones = ['light skin tone', 'medium-light skin tone', 'medium skin tone', 'medium-dark skin tone', 'dark skin tone']
 
 try:
     api_url = 'https://unicode.org/Public/emoji/latest/emoji-test.txt'
     api_response = request.urlopen(api_url).read().decode('utf-8')
     lines = [line.strip() for line in api_response.split('\n') if ('; fully-qualified' in line) or ('; component' in line)]
 
-    lang_url_1 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations/{language}.xml'
-    lang_url_2 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived/{language}.xml'
+    lang_url_1 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations/{language.replace("-", "_")}.xml'
+    lang_url_2 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived/{language.replace("-", "_")}.xml'
     lang_response_1 = request.urlopen(lang_url_1).read().decode('utf-8')
     lang_response_2 = request.urlopen(lang_url_2).read().decode('utf-8')
 
@@ -105,7 +125,7 @@ try:
     for line in lines:
         array = re.split(r'\bfully-qualified\b|\bcomponent\b', line)[1].strip().split(' ', 3)
         emoji, name = array[1], array[-1]
-        full_emojis.append({"emoji": emoji, "name": name})
+        full_emojis.append({'emoji': emoji, 'name': name})
         clean_emoji = remove_skin_tones(emoji)
         if emoji != clean_emoji:
             cleaned_emojis.append(clean_emoji)
@@ -143,10 +163,10 @@ try:
         })
 
     for item in langs:
-        if item["value"] == language:
-            lang = item["title"]
+        if item['value'] == language:
+            lang = item['title']
             break
-    info = {'time': datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"), 'lang': {'title': lang, 'value': language}, 'workflow_version': workflow_version}
+    info = {'time': datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'), 'lang': {'title': lang, 'value': language}, 'workflow_version': workflow_version}
     with open(api_file_path, 'w', encoding='utf-8') as file:
         json.dump({'info': info, 'items': items}, file, ensure_ascii=False, indent=4)
 
@@ -156,7 +176,7 @@ try:
         image_path = os.path.join(assets_folder_path, i)
         image = Image.open(image_path)
         width, height = image.size
-        new_image = Image.new("RGBA", (width + padding, height + padding), (0, 0, 0, 0))
+        new_image = Image.new('RGBA', (width + padding, height + padding), (0, 0, 0, 0))
         new_image.paste(image, (int(padding / 2), int(padding / 2)))
         output_path = os.path.join(icons_folder_path, i)
         new_image.save(output_path)

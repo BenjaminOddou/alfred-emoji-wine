@@ -57,27 +57,31 @@ You can edit these triggers (flagged with a `🕹️` symbol) in the user config
 
 1. `🌐 Language` : select the language you prefer. Here is the full list of supported languages :
 
-| **Language**    | **ISO639\-1** | **EmojiPedia** | **EmojiTerra** | **EmojiAll** |
-|-----------------|---------------|----------------|----------------|--------------|
-| 🇬🇧 English    | en            | 🟢             | 🟢             | 🟢           |
-| 🇫🇷 Français   | fr            | 🟢             | 🟢             | 🟢           |
-| 🇪🇸 Español    | es            | 🟢             | 🟢             | 🟢           |
-| 🇵🇹 Português  | pt            | 🟢             | 🟢             | 🟢           |
-| 🇮🇹 Italiano   | it            | 🟢             | 🟢             | 🟢           |
-| 🇩🇪 Deutsch    | de            | 🟢             | 🟢             | 🟢           |
-| 🇳🇱 Nederlands | nl            | 🟢             | 🟢             | 🟢           |
-| 🇳🇴 Norsk      | no            | 🟢             | 🔴             | 🔴           |
-| 🇸🇪 Svenska    | sv            | 🟢             | 🟢             | 🟢           |
-| 🇩🇰 Dansk      | da            | 🟢             | 🟢             | 🟢           |
-| 🇮🇩 Melayu     | ms            | 🟢             | 🟢             | 🟢           |
-| 🇨🇳 中文         | zh            | 🟢             | 🟢             | 🔴           |
-| 🇯🇵 日本語        | ja            | 🟢             | 🟢             | 🟢           |
-| 🇰🇷 한국어        | ko            | 🟢             | 🟢             | 🟢           |
-| 🇮🇳 हिंदी      | hi            | 🔴             | 🔴             | 🟢           |
-| 🇮🇳 मराठी      | mr            | 🔴             | 🔴             | 🔴           |
-| 🇮🇳 తెలుగు     | te            | 🔴             | 🔴             | 🔴           |
-| 🇧🇩 বাংলা      | bn            | 🔴             | 🔴             | 🟢           |
-| 🇱🇰 தமிழ்      | ta            | 🔴             | 🔴             | 🔴           |
+| **Language**       | **ISO639-1** | **EmojiPedia** | **EmojiTerra** | **EmojiAll** |
+|--------------------|--------------|----------------|----------------|--------------|
+| 🇬🇧 English       | en           | 🟢             | 🟢             | 🟢           |
+| 🇫🇷 Français      | fr           | 🟢             | 🟢             | 🟢           |
+| 🇪🇸 Español       | es           | 🟢             | 🟢             | 🟢           |
+| 🇵🇹 Português     | pt           | 🟢             | 🟢             | 🟢           |
+| 🇮🇹 Italiano      | it           | 🟢             | 🟢             | 🟢           |
+| 🇩🇪 Deutsch       | de           | 🟢             | 🟢             | 🟢           |
+| 🇳🇱 Nederlands    | nl           | 🟢             | 🔴             | 🟢           |
+| 🇳🇴 Norsk         | no           | 🟢             | 🔴             | 🔴           |
+| 🇸🇪 Svenska       | sv           | 🟢             | 🔴             | 🟢           |
+| 🇩🇰 Dansk         | da           | 🟢             | 🔴             | 🟢           |
+| 🇮🇩 Melayu        | ms           | 🟢             | 🔴             | 🟢           |
+| 🇸🇦 ٱلْعَرَبِيَّة | ar           | 🔴             | 🔴             | 🟢           |
+| 🇷🇺 Русский       | ru           | 🔴             | 🔴             | 🟢           |
+| 🇨🇳 中文            | zh           | 🟢             | 🔴             | 🔴           |
+| 🇨🇳 繁體中文          | zh-hant      | 🔴             | 🔴             | 🟢           |
+| 🇯🇵 日本語           | ja           | 🟢             | 🔴             | 🟢           |
+| 🇰🇷 한국어           | ko           | 🟢             | 🔴             | 🟢           |
+| 🇮🇳 हिंदी         | hi           | 🔴             | 🔴             | 🟢           |
+| 🇮🇳 मराठी         | mr           | 🔴             | 🔴             | 🔴           |
+| 🇮🇳 తెలుగు        | te           | 🔴             | 🔴             | 🔴           |
+| 🇧🇩 বাংলা         | bn           | 🔴             | 🔴             | 🔴           |
+| 🇱🇰 தமிழ்         | ta           | 🔴             | 🔴             | 🔴           |
+
 
 > All emojis aren't translated in all languages. Some languages aren't supported by emoji dictionnaries.
 
@@ -85,11 +89,13 @@ If you wish to use another language, open a GitHub issue [here](https://github.c
 
 2. `✂️ Padding` : Add transparent margins to icons (in pixels).
 
-3. `📖 Emoji Dictionary` : Select your online emoji dictionary.
+3. `🪩 Style` : Select between list or grid view.
 
-4. `🌈 Skin Tone` : Select your preferred skin tone.
+4. `📖 Emoji Dictionary` : Select your online emoji dictionary.
 
-5. `🎷 Notification sound` : Personalize the sound of the workflow notification.
+5. `🌈 Skin Tone` : Select your preferred skin tone.
+
+6. `🎷 Notification sound` : Personalize the sound of the workflow notification.
 
 ### Search an emoji
 

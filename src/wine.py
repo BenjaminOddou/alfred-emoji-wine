@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import re
 import json
 from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs, workflow_version, skin_tone
@@ -57,7 +59,7 @@ if api_data:
                 },
             }
             if url is not None:
-                country = f'{language}/' if language != 'en' else ''
+                country = f'{language.lower()}/' if language != 'en' else ''
                 elem['mods'].update({
                     'shift': {
                         'subtitle': f'Find the emoji in {emoji_dictionary}',
