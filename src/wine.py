@@ -2,7 +2,7 @@
 
 import re
 import json
-from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs, workflow_version, skin_tone
+from utils import config, api_file_path, tags_file_path, icons_folder_path, language, emoji_dictionary, langs, workflow_version, skin_tone, short_copy, short_paste, short_web
 
 api_data = config(api_file_path)
 tags_data = config(tags_file_path)
@@ -46,29 +46,49 @@ if api_data:
             elem = {
                 'uid': name,
                 'title': title,
-                'subtitle': f'Copy "{emoji}" to clipboard',
-                'arg': emoji,
                 'match': match,
                 'icon': {
                     'path': icon_path,
                 },
-                'mods': {
-                    'cmd': {
-                        'subtitle': f'Paste "{emoji}" into frontmost application',
-                    },
-                },
             }
-            if url is not None:
-                country = f'{language.lower()}/' if language != 'en' else ''
-                elem['mods'].update({
-                    'shift': {
-                        'subtitle': f'Find the emoji in {emoji_dictionary}',
-                        'arg': f'_web;https://{emoji_dictionary}/{country}{url}',
-                        'icon': {
-                            'path': f'{icons_folder_path}/{emoji_dictionary.split(".")[0]}.png',
-                        },
+            mod = {}
+            if short_copy == 'arg':
+                elem['subtitle'] = f'Copy "{emoji}" to the clipboard'
+                elem['arg'] = f'_copy;{emoji}'
+            elif short_copy:
+                mod.update({
+                    short_copy: {
+                        'subtitle': f'Press ⏎ to copy "{emoji}" to the clipboard',
+                        'arg': f'_copy;{emoji}',
                     }
                 })
+            if short_paste == 'arg':
+                elem['subtitle'] = f'Paste "{emoji}" into frontmost application'
+                elem['arg'] = f'_paste;{emoji}'
+            elif short_paste:
+                mod.update({
+                    short_paste: {
+                        'subtitle': f'Press ⏎ to paste "{emoji}" into frontmost application',
+                        'arg': f'_paste;{emoji}',
+                    }
+                })
+            if url is not None:
+                country = f'{language.lower()}/' if language != 'en' else ''
+                if short_web == 'arg':
+                    elem['subtitle'] = f'Find the emoji in {emoji_dictionary}'
+                    elem['arg'] = f'_web;https://{emoji_dictionary}/{country}{url}'
+                elif short_web:
+                    mod.update({
+                        short_web: {
+                            'subtitle': f'Press ⏎ to find the emoji in {emoji_dictionary}',
+                            'arg': f'_web;https://{emoji_dictionary}/{country}{url}',
+                            'icon': {
+                                'path': f'{icons_folder_path}/{emoji_dictionary.split(".")[0]}.png',
+                            },
+                        }
+                    })
+            if mod:
+                elem['mods'] = mod
             if skin_tone in skin_tones or 'base' in skin_tones or skin_tone == 'all':
                 items.append(elem)
 else:
@@ -81,4 +101,4 @@ else:
         },
     })
 
-print(json.dumps({'items': items}))
+print(json.dumps({'items': items}, ensure_ascii=False))

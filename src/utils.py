@@ -20,6 +20,9 @@ langs = langs_dict('info.plist')
 sound = os.environ['sound']
 language = os.environ['language']
 skin_tone = os.environ['skin_tone']
+short_copy = os.environ['short_copy']
+short_paste = os.environ['short_paste']
+short_web = os.environ['short_web']
 try:
     padding = int(os.environ['padding'])
 except:
