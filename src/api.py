@@ -76,7 +76,7 @@ def convert_emoji_to_png(emoji, name):
     draw.text(draw_position, emoji, font=font, embedded_color=True)
     if is_blank_image(image):
         raise ValueError(f"Generated image for '{emoji}' is blank or unsupported.")
-    image.save(f'{icons_folder_path}/{name.replace(':', '')}.png', 'PNG')
+    image.save(f"{icons_folder_path}/{name.replace(':', '')}.png", 'PNG')
 
 def remove_skin_tones(emoji):
     skin_tone_range = range(0x1F3FB, 0x1F3FF + 1)
