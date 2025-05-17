@@ -160,7 +160,7 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<false/>
+				<true/>
 			</dict>
 		</array>
 		<key>5B589A8E-0D1A-4A17-9F2F-27D064B8F038</key>
