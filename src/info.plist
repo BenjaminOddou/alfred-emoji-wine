@@ -51,7 +51,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>A25C0DF7-A6A9-4FDE-901B-07B09DD3679E</string>
+				<string>C1C3E31C-36AA-479E-95EF-3FBF29A692A5</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -173,7 +173,7 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<false/>
+				<true/>
 			</dict>
 		</array>
 		<key>6A0FD0BF-DCF2-4A78-8C0A-A89608EF3065</key>
@@ -301,6 +301,19 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>19527210-0ADC-4179-BAB9-82A03C19D378</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>C1C3E31C-36AA-479E-95EF-3FBF29A692A5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A25C0DF7-A6A9-4FDE-901B-07B09DD3679E</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -754,6 +767,19 @@
 			<string>A25C0DF7-A6A9-4FDE-901B-07B09DD3679E</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>unstackview</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.hidealfred</string>
+			<key>uid</key>
+			<string>C1C3E31C-36AA-479E-95EF-3FBF29A692A5</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -1310,6 +1336,13 @@ Go to the dedicated [GitHub repository](https://github.com/BenjaminOddou/alfred-
 			<real>1440</real>
 			<key>ypos</key>
 			<real>945</real>
+		</dict>
+		<key>C1C3E31C-36AA-479E-95EF-3FBF29A692A5</key>
+		<dict>
+			<key>xpos</key>
+			<real>905</real>
+			<key>ypos</key>
+			<real>605</real>
 		</dict>
 		<key>C650A472-C9E4-412F-A481-8B4F8E51A05E</key>
 		<dict>
