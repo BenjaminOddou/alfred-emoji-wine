@@ -160,7 +160,7 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<false/>
+				<true/>
 			</dict>
 		</array>
 		<key>5B589A8E-0D1A-4A17-9F2F-27D064B8F038</key>
@@ -446,17 +446,17 @@
 				<key>runningsubtext</key>
 				<string>Loading emojis...</string>
 				<key>script</key>
-				<string>python3 wine.py</string>
+				<string></string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
-				<string></string>
+				<string>wine.py</string>
 				<key>subtext</key>
 				<string>🍷 Find the most refined emojis</string>
 				<key>title</key>
 				<string>Emoji Wine</string>
 				<key>type</key>
-				<integer>11</integer>
+				<integer>8</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -646,7 +646,7 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>1</integer>
+				<integer>2</integer>
 				<key>keyword</key>
 				<string>{var:trigger1}</string>
 				<key>subtext</key>
@@ -654,7 +654,7 @@
 				<key>text</key>
 				<string>Emoji Wine</string>
 				<key>withspace</key>
-				<true/>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.keyword</string>
@@ -783,17 +783,17 @@
 				<key>runningsubtext</key>
 				<string>Loading elements...</string>
 				<key>script</key>
-				<string>python3 harvest.py</string>
+				<string></string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
-				<string></string>
+				<string>harvest.py</string>
 				<key>subtext</key>
 				<string>🍇 Downloads the latest data from unicode.org</string>
 				<key>title</key>
 				<string>Refresh the API</string>
 				<key>type</key>
-				<integer>11</integer>
+				<integer>8</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -1988,8 +1988,10 @@ note: not all emojis are available in all languages.</string>
 			<string>short_web</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
-	<string>1.6.1</string>
+	<string>1.6.2</string>
 	<key>webaddress</key>
 	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
 </dict>

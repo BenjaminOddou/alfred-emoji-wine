@@ -1,24 +1,41 @@
+#!/usr/bin/env python3
+
 import os
 import json
-from utils import config, api_file_path, tags_file_path, icons_folder_path, language, data_folder_path, langs
+from utils import (
+    config,
+    api_file_path,
+    tags_file_path,
+    icons_folder_path,
+    language,
+    data_folder_path,
+    langs,
+)
+
 
 def get_title(obj):
-    title = obj['title'] if obj['title'] else obj['name']
+    title = obj["title"] if obj["title"] else obj["name"]
     return title
 
+
 def get_icon_path(obj):
-    icon_path = f'{icons_folder_path}/{obj["name"].replace(":", "")}.png' if obj["image"] else f'{icons_folder_path}/unicode.png'
+    icon_path = (
+        f'{icons_folder_path}/{obj["name"].replace(":", "")}.png'
+        if obj["image"]
+        else f"{icons_folder_path}/unicode.png"
+    )
     return icon_path
+
 
 api_data = config(api_file_path)
 tags_data = config(tags_file_path)
 items = []
 
-lib = os.getenv('_lib')
+lib = os.getenv("_lib")
 action = None
 level = 0
 if lib is not None:
-    lib = lib.split(';')
+    lib = lib.split(";")
     action, level, subaction, kID = lib[1], int(lib[2]), lib[3], lib[4]
 
 if tags_data is None:
@@ -26,7 +43,7 @@ if tags_data is None:
         os.mkdir(data_folder_path)
     except:
         pass
-    with open(tags_file_path, 'w') as file:
+    with open(tags_file_path, "w") as file:
         json.dump([], file)
 
 for item in langs:
@@ -36,160 +53,186 @@ for item in langs:
 
 if api_data:
     if level == 0:
-        num_object = len(api_data['items'])
+        num_object = len(api_data["items"])
         items = [
             {
-                'title': 'Refresh the API',
-                'subtitle': f'Press ⏎ to grab emoji data with language : {lang}',
-                'arg': '_api',
-                'icon': {
-                    'path': 'icons/sync.webp',
+                "title": "Refresh the API",
+                "subtitle": f"Press ⏎ to grab emoji data with language : {lang}",
+                "arg": "_api",
+                "icon": {
+                    "path": "icons/sync.webp",
                 },
             },
             {
-                'title': 'Tags',
-                'subtitle': f'Create, modify or remove tags for {lang}',
-                'arg': '_rerun;;1;;',
-                'icon': {
-                    'path': 'icons/tag.webp',
+                "title": "Tags",
+                "subtitle": f"Create, modify or remove tags for {lang}",
+                "arg": "_rerun;;1;;",
+                "icon": {
+                    "path": "icons/tag.webp",
                 },
             },
             {
-                'title': 'API information',
-                'subtitle': f'Last update : {api_data["info"]["time"]} ǀ {num_object} Emojis ǀ {api_data["info"]["lang"]["title"]} ǀ Version : {api_data["info"].get("workflow_version", "unknown")}',
-                'valid': False,
-                'icon': {
-                    'path': 'icons/info.webp',
+                "title": "API information",
+                "subtitle": f'Last update : {api_data["info"]["time"]} ǀ {num_object} Emojis ǀ {api_data["info"]["lang"]["title"]} ǀ Version : {api_data["info"].get("workflow_version", "unknown")}',
+                "valid": False,
+                "icon": {
+                    "path": "icons/info.webp",
                 },
-            }
+            },
         ]
     else:
         for obj in tags_data:
-            if obj['id'] == kID:
-                title = obj['title']
-                emojis_list = obj['emojis']
+            if obj["id"] == kID:
+                title = obj["title"]
+                emojis_list = obj["emojis"]
                 break
-        items.append({
-            'title': 'Return',
-            'subtitle': 'Back to previous state',
-            'arg': f'_rerun;{action};{level - 1};;{kID}',
-            'icon': {
-                'path': 'icons/return.webp',
-            },
-        })
+        items.append(
+            {
+                "title": "Return",
+                "subtitle": "Back to previous state",
+                "arg": f"_rerun;{action};{level - 1};;{kID}",
+                "icon": {
+                    "path": "icons/return.webp",
+                },
+            }
+        )
         if level == 1:
             for obj in [
                 {
-                    'title': 'Add a new tag',
-                    'subtitle': 'Create a new tag and assign it to emojis',
-                    'arg': f'_tags;new;;;{"ǀ".join(lib)}',
-                    'icon': {
-                        'path': 'icons/new.webp',
+                    "title": "Add a new tag",
+                    "subtitle": "Create a new tag and assign it to emojis",
+                    "arg": f'_tags;new;;;{"ǀ".join(lib)}',
+                    "icon": {
+                        "path": "icons/new.webp",
                     },
                 },
                 {
-                    'title': 'Delete a tag',
-                    'subtitle': 'Erase a tag from the list below',
-                    'arg': '_rerun;delete;2;;',
-                    'icon': {
-                        'path': 'icons/delete.webp',
+                    "title": "Delete a tag",
+                    "subtitle": "Erase a tag from the list below",
+                    "arg": "_rerun;delete;2;;",
+                    "icon": {
+                        "path": "icons/delete.webp",
                     },
-                }
+                },
             ]:
                 items.append(obj)
             for obj in tags_data:
-                list_emojis = ', '.join(obj['emojis'])
-                list_emojis = '❌ No Emojis' if list_emojis == '' else f'Emojis: {list_emojis}'
-                items.append({
-                    'title': obj['title'] if obj['title'] != '' else 'No Title',
-                    'subtitle': list_emojis,
-                    'arg': f'_rerun;modify;2;;{obj["id"]}',
-                    'icon': {
-                        'path': 'icons/tag.webp',
-                    },
-                })
-        elif level == 2:
-            if action == 'delete':
-                for obj in tags_data:
-                    list_emojis = ', '.join(obj.get('emojis'))
-                    list_emojis = '❌ No Emojis' if list_emojis == '' else f'Emojis: {list_emojis}'
-                    items.append({
-                        'title': obj['title'] if obj['title'] != '' else 'No Title',
-                        'subtitle': list_emojis,
-                        'arg': f'_tags;delete;;{obj["id"]};{"ǀ".join(lib)}',
-                        'icon': {
-                            'path': 'icons/tag.webp',
-                        },
-                    })
-            elif action == 'modify' and api_data is not None:
-                for obj in [
+                list_emojis = ", ".join(obj["emojis"])
+                list_emojis = (
+                    "❌ No Emojis" if list_emojis == "" else f"Emojis: {list_emojis}"
+                )
+                items.append(
                     {
-                        'title': 'Modify the Tag\'s name',
-                        'subtitle': f"Current name: '{title}'",
-                        'arg': f'_tags;modify;;{obj["id"]};{title};{"ǀ".join(lib)}',
-                        'icon': {
-                            'path': 'icons/tag.webp',
-                        },
-                    },
-                    {
-                        'title': 'Link an emoji',
-                        'subtitle': 'Link the tag to emojis',
-                        'arg': f'_rerun;modify;3;new;{kID}',
-                        'icon': {
-                            'path': 'icons/new.webp',
-                        },
-                    },
-                    {
-                        'title': 'Unlink an emoji',
-                        'subtitle': 'Unlink the tag from emojis',
-                        'arg': f'_rerun;modify;3;delete;{kID}',
-                        'icon': {
-                            'path': 'icons/delete.webp',
+                        "title": obj["title"] if obj["title"] != "" else "No Title",
+                        "subtitle": list_emojis,
+                        "arg": f'_rerun;modify;2;;{obj["id"]}',
+                        "icon": {
+                            "path": "icons/tag.webp",
                         },
                     }
+                )
+        elif level == 2:
+            if action == "delete":
+                for obj in tags_data:
+                    list_emojis = ", ".join(obj.get("emojis"))
+                    list_emojis = (
+                        "❌ No Emojis"
+                        if list_emojis == ""
+                        else f"Emojis: {list_emojis}"
+                    )
+                    items.append(
+                        {
+                            "title": obj["title"] if obj["title"] != "" else "No Title",
+                            "subtitle": list_emojis,
+                            "arg": f'_tags;delete;;{obj["id"]};{"ǀ".join(lib)}',
+                            "icon": {
+                                "path": "icons/tag.webp",
+                            },
+                        }
+                    )
+            elif action == "modify" and api_data is not None:
+                for obj in [
+                    {
+                        "title": "Modify the Tag's name",
+                        "subtitle": f"Current name: '{title}'",
+                        "arg": f'_tags;modify;;{obj["id"]};{title};{"ǀ".join(lib)}',
+                        "icon": {
+                            "path": "icons/tag.webp",
+                        },
+                    },
+                    {
+                        "title": "Link an emoji",
+                        "subtitle": "Link the tag to emojis",
+                        "arg": f"_rerun;modify;3;new;{kID}",
+                        "icon": {
+                            "path": "icons/new.webp",
+                        },
+                    },
+                    {
+                        "title": "Unlink an emoji",
+                        "subtitle": "Unlink the tag from emojis",
+                        "arg": f"_rerun;modify;3;delete;{kID}",
+                        "icon": {
+                            "path": "icons/delete.webp",
+                        },
+                    },
                 ]:
                     items.append(obj)
                 if emojis_list != []:
-                    filtered_data = [obj for obj in api_data['items'] if obj['emoji'] in emojis_list]
+                    filtered_data = [
+                        obj for obj in api_data["items"] if obj["emoji"] in emojis_list
+                    ]
                     for obj in filtered_data:
-                        items.append({
-                            'title': get_title(obj),
-                            'valid': False,
-                            'icon': {
-                                'path': get_icon_path(obj),
-                            },
-                        })
+                        items.append(
+                            {
+                                "title": get_title(obj),
+                                "valid": False,
+                                "icon": {
+                                    "path": get_icon_path(obj),
+                                },
+                            }
+                        )
         elif level == 3:
-            if action == 'modify' and subaction == 'new':
-                filtered_data = [obj for obj in api_data['items'] if obj['emoji'] not in emojis_list]
+            if action == "modify" and subaction == "new":
+                filtered_data = [
+                    obj for obj in api_data["items"] if obj["emoji"] not in emojis_list
+                ]
                 for obj in filtered_data:
-                    items.append({
-                        'title': get_title(obj),
-                        'subtitle': f"Add '{title}' to '{obj['emoji']}'",
-                        'arg': f'_tags;emoji;new;{kID};{obj["emoji"]};{"ǀ".join(lib)}',
-                        'icon': {
-                            'path': get_icon_path(obj),
-                        },
-                    })
-            elif action == 'modify' and subaction == 'delete' and emojis_list != []:
-                filtered_data = [obj for obj in api_data['items'] if obj['emoji'] in emojis_list]
+                    items.append(
+                        {
+                            "title": get_title(obj),
+                            "subtitle": f"Add '{title}' to '{obj['emoji']}'",
+                            "arg": f'_tags;emoji;new;{kID};{obj["emoji"]};{"ǀ".join(lib)}',
+                            "icon": {
+                                "path": get_icon_path(obj),
+                            },
+                        }
+                    )
+            elif action == "modify" and subaction == "delete" and emojis_list != []:
+                filtered_data = [
+                    obj for obj in api_data["items"] if obj["emoji"] in emojis_list
+                ]
                 for obj in filtered_data:
-                    items.append({
-                        'title': get_title(obj),
-                        'arg': f'_tags;emoji;delete;{kID};{obj["emoji"]};{"ǀ".join(lib)}',
-                        'icon': {
-                            'path': get_icon_path(obj),
-                        },
-                    })
+                    items.append(
+                        {
+                            "title": get_title(obj),
+                            "arg": f'_tags;emoji;delete;{kID};{obj["emoji"]};{"ǀ".join(lib)}',
+                            "icon": {
+                                "path": get_icon_path(obj),
+                            },
+                        }
+                    )
 else:
-    items.append({
-        'title': 'No API detected',
-        'subtitle': f'Press ⏎ to grab emoji data with language : {lang}',
-        'arg': '_api',
-        'icon': {
-            'path': 'icons/info.webp',
-        },
-    })
+    items.append(
+        {
+            "title": "No API detected",
+            "subtitle": f"Press ⏎ to grab emoji data with language : {lang}",
+            "arg": "_api",
+            "icon": {
+                "path": "icons/info.webp",
+            },
+        }
+    )
 
 
-print(json.dumps({'items': items}))
+print(json.dumps({"items": items}))
