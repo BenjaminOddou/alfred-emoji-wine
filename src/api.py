@@ -141,9 +141,21 @@ skin_tones = [
     "dark skin tone",
 ]
 
+def fetch_url(url):
+    try:
+        req = request.Request(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            },
+        )
+        return request.urlopen(req).read().decode("utf-8")
+    except Exception as e:
+        raise f"Failed to fetch URL: {url} : {e}"
+
 try:
     api_url = "https://unicode.org/Public/emoji/latest/emoji-test.txt"
-    api_response = request.urlopen(api_url).read().decode("utf-8")
+    api_response = fetch_url(api_url)
     lines = [
         line.strip()
         for line in api_response.split("\n")
@@ -152,8 +164,8 @@ try:
 
     lang_url_1 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations/{language.replace("-", "_")}.xml'
     lang_url_2 = f'https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived/{language.replace("-", "_")}.xml'
-    lang_response_1 = request.urlopen(lang_url_1).read().decode("utf-8")
-    lang_response_2 = request.urlopen(lang_url_2).read().decode("utf-8")
+    lang_response_1 = fetch_url(lang_url_1)
+    lang_response_2 = fetch_url(lang_url_2)
 
     root = ET.fromstring(lang_response_1)
     root.extend(ET.fromstring(lang_response_2))
