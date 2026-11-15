@@ -117,8 +117,6 @@ In the following menu you'll find :
 2. The Tags section for the selected language.
 3. The last API information with date and time of the last update, number of emojis and the language selected when the API was created.
 
-![harvest](public/harvest.webp)
-
 Tags can be created and linked to one or multiple emojis.
 
 > **Navigation** : the menu works in place, without reopening Alfred (after a tag action, Alfred reopens right where you were). In grid style, **Tags** reopens Alfred in list view for the menu. <kbd>⏎</kbd> (or <kbd>⇥</kbd>) on a folder goes forward, **Return** (<kbd>⏎</kbd>) goes back one level and **Back to search** returns to the emoji search, and whatever you type is used either as a filter or as a name :
