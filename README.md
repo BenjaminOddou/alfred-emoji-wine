@@ -10,13 +10,15 @@ Welcome to the Alfred Emoji Wine repository: **An Alfred Workflow** ✨
 ## ✅ Prerequisites
 
 * MacOS.
-* Alfred 5. Note that the [Alfred Powerpack](https://www.alfredapp.com/powerpack/) is required to use workflows.
+* **Alfred 6**. Note that the [Alfred Powerpack](https://www.alfredapp.com/powerpack/) is required to use workflows. Alfred 5.5 still runs the workflow, without the [Alfred 6 extras](#-alfred-6).
 * Requires **python 3.8** or above (the one shipped with the Xcode Command Line Tools is fine).
 * No other dependency: icons are rendered with the tools built into macOS (no more Pillow).
 
 ## 🏎️ Data sources
 
 This workflow combines multiple sources (see below) to build a local JSON API (`~/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.benjamino.emoji_wine`) along with an icons folder with png images. Emoji icons are rendered once with the macOS built-in AppKit (through `osascript`) using Apple Color Emoji, and are reused on the next refreshes (they only change when you change the padding).
+
+The search results are prepared once in a search index next to it (`search.index`, rebuilt when the settings, the API or the tags change) : at each keystroke the workflow only compares words and copies ready-made results.
 
 List of sources :
 * [Full list of latest emojis](https://unicode.org/Public/emoji/latest/emoji-test.txt) - Used to grab the full list of emojis.
@@ -37,6 +39,15 @@ python3 --version
 ```
 
 That's it, nothing else to install. If `python3` is missing, run `xcode-select --install`.
+
+### 🆕 Alfred 6
+
+The workflow uses what Alfred 6 brings to workflows:
+
+* **Native notifications** : Alfred posts them itself (*Post Notification* output, macOS UserNotifications). The Notificator helper app is gone, the old copy is removed from the cache at the next refresh. They can be turned off with `🔔 Notifications`, as in [Alfred Dashlane](https://github.com/BenjaminOddou/alfred-dashlane).
+* **Menu always on top** (`skipknowledge`) : results keep the workflow order, so **Tags**, **API information** and **Refresh the API** always come first. Results have no `uid` anymore : Alfred doesn't reorder them with what it learnt.
+* **Strict modifier keys** (`strictmods`) : a shortcut you deactivated (or <kbd>⇧</kbd><kbd>⏎</kbd> on an emoji without dictionary page, any modifier on a menu row) does nothing, instead of running the <kbd>⏎</kbd> action by surprise.
+* **Icons keep their shape** (`iconresize`).
 
 ## 🧙‍♂️ Invoke the workflow
 
@@ -93,7 +104,9 @@ If you wish to use another language, open a GitHub issue [here](https://github.c
 
 5. `🌈 Skin Tone` : Select your preferred skin tone.
 
-6. `🎷 Notification sound` : Personalize the sound of the workflow notification.
+6. `🔔 Notifications` : show the progress and the result of a refresh, and the errors, in a native macOS notification (default on). Untick it and the workflow is silent : no notification, no sound (errors are still written in the logs).
+
+7. `🎷 Notification sound` : Personalize the sound played with the notifications, or mute it.
 
 ### Search an emoji
 
@@ -150,6 +163,14 @@ Project layout :
 | `src/winelib/` | Shared library (settings, data parsing, icons, search, navigation, tags) |
 | `src/winelib/render_icons.js` | JXA / AppKit icon renderer |
 | `tests/` | Unit and structure tests (info.plist graph included) |
+
+## 🆕 What's new in 2.1.0
+
+* Made for Alfred 6 : notifications posted by Alfred (Notificator removed), menu always on top (`skipknowledge`, no more `uid`), strict modifier keys and fitted icons. See [Alfred 6](#-alfred-6).
+* Up to 5x faster search : a search index with pre-normalized text and ready-made JSON (no JSON decoding, no accent stripping, no plist parsing, no `json` / `re` import at each keystroke), compact output (no `match` in list view).
+* The menu reads the search index instead of `api.json`. The unlink picker shows every skin tone, so a linked emoji can always be unlinked.
+* One notification at the end of a refresh (with the number of emojis) and on errors, with the traceback in the logs.
+* New `🔔 Notifications` option (as in Alfred Dashlane) : untick it to keep the workflow silent.
 
 ## 🆕 What's new in 2.0.0
 

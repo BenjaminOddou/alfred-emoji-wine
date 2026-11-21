@@ -67,6 +67,9 @@ class InfoPlist(unittest.TestCase):
                 if condition["inputstring"] == "{query}":  # menu query goes to the list view
                     self.assertEqual(condition["outputlabel"], "menu")
                     continue
+                if condition["inputstring"] == "{var:notify}":  # 🔔 Notifications unticked: silent
+                    self.assertEqual((condition["matchstring"], condition["outputlabel"]), ("0", "silent"))
+                    continue
                 self.assertEqual(condition["inputstring"], "{var:action}")
                 self.assertIn(condition["matchstring"], known)
 
@@ -79,9 +82,10 @@ class InfoPlist(unittest.TestCase):
 
     def test_settings_used_by_scripts_are_configurable(self):
         variables = {u["variable"] for u in self.plist["userconfigurationconfig"]}
-        for name in ("language", "skin_tone", "sound", "padding", "emoji_dictionary",
+        for name in ("language", "skin_tone", "notify", "sound", "padding", "emoji_dictionary",
                      "short_copy", "short_paste", "short_web", "style", "trigger1"):
             self.assertIn(name, variables)
+        self.assertLessEqual(variables - {"trigger1"}, set(Settings.__slots__))
 
     def test_defaults_are_valid_choices(self):
         for entry in self.plist["userconfigurationconfig"]:
@@ -112,8 +116,9 @@ class Scripts(unittest.TestCase):
                               capture_output=True, text=True)
         self.assertEqual(done.returncode, 0, done.stderr)
 
-    def test_notificator_is_executable(self):
-        self.assertTrue(os.access(os.path.join(SRC, "notificator"), os.X_OK))
+    def test_entry_points_are_executable(self):
+        for name in ("wine.py", "refresh.py", "tags.py"):
+            self.assertTrue(os.access(os.path.join(SRC, name), os.X_OK), name)
 
     def test_python38_syntax_only(self):
         # no `match` statements, no `X | Y` annotations, no walrus-less surprises: compile check
@@ -158,6 +163,85 @@ class SingleKeyword(unittest.TestCase):
             plist = plistlib.load(handle)
         objects = {o["uid"]: o for o in plist["objects"]}
         tags = next(u for u, o in objects.items() if "tags.py" in o["config"].get("script", ""))
-        target = objects[plist["connections"][tags][0]["destinationuid"]]
+        (target,) = [objects[l["destinationuid"]] for l in plist["connections"][tags]
+                     if objects[l["destinationuid"]]["type"].endswith("callexternaltrigger")]
         self.assertEqual(target["config"]["externaltriggerid"], "emoji")
         self.assertTrue(target["config"]["passinputasargument"])
+
+
+class Alfred6Notifications(unittest.TestCase):
+    """No Notificator anymore: Alfred 6 posts the notifications (macOS UserNotifications API)."""
+
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(SRC, "info.plist"), "rb") as handle:
+            cls.plist = plistlib.load(handle)
+        cls.objects = {o["uid"]: o for o in cls.plist["objects"]}
+
+    def targets(self, uid, output=None):
+        return [self.objects[l["destinationuid"]] for l in self.plist["connections"].get(uid, [])
+                if output is None or l.get("sourceoutputuid") == output]
+
+    def script(self, name):
+        return next(u for u, o in self.objects.items() if "python3 %s" % name in o["config"].get("script", ""))
+
+    def test_notificator_is_gone(self):
+        self.assertFalse(os.path.exists(os.path.join(SRC, "notificator")))
+        for folder, _, files in os.walk(SRC):
+            for name in files:
+                if name.endswith((".py", ".js")):
+                    with open(os.path.join(folder, name), encoding="utf-8") as handle:
+                        self.assertNotIn("notificator --", handle.read(), name)
+
+    def test_scripts_end_with_a_notification_posted_by_alfred(self):
+        for name in ("refresh.py", "tags.py"):
+            (argument,) = [t for t in self.targets(self.script(name))
+                           if t["type"] == "alfred.workflow.utility.argument"]
+            self.assertEqual(argument["config"]["argument"], "{var:notify_text}")
+            (post,) = self.targets(argument["uid"])
+            self.assertEqual(post["type"], "alfred.workflow.output.notification")
+            config = post["config"]
+            self.assertTrue(config["onlyshowifquerypopulated"])  # empty text (tag success): no notification
+            self.assertEqual((config["title"], config["text"]), ("{var:notify_title}", "{query}"))
+
+    def test_refresh_starts_with_a_please_wait_notification(self):
+        actions_uid = next(u for u, o in self.objects.items()
+                           if any(c["matchstring"] == "refresh" for c in o["config"].get("conditions", [])))
+        refresh_output = next(c["uid"] for c in self.objects[actions_uid]["config"]["conditions"]
+                              if c["matchstring"] == "refresh")
+        api = next(u for u, o in self.objects.items() if o["config"].get("triggerid") == "api")
+        for uid, output in ((actions_uid, refresh_output), (api, None)):
+            gate, script = self.targets(uid, output)
+            self.assertEqual(script["type"], "alfred.workflow.action.script")
+            # 🔔 Notifications unticked ("0"): the silent output leads nowhere, else the notification
+            (silent,) = gate["config"]["conditions"]
+            self.assertEqual((silent["inputstring"], silent["matchstring"]), ("{var:notify}", "0"))
+            self.assertFalse(gate["config"]["hideelse"])
+            self.assertEqual(self.targets(gate["uid"], silent["uid"]), [])
+            links = self.plist["connections"][gate["uid"]]
+            self.assertEqual([l.get("sourceoutputuid") for l in links], [None])  # the else output
+            (wait,) = self.targets(gate["uid"])
+            self.assertEqual(wait["type"], "alfred.workflow.output.notification")
+            self.assertFalse(wait["config"]["onlyshowifquerypopulated"])
+            self.assertTrue(wait["config"]["title"].startswith("⏳"))
+
+    def test_notifications_checkbox_like_alfred_dashlane(self):
+        entry = next(c for c in self.plist["userconfigurationconfig"] if c["variable"] == "notify")
+        self.assertEqual((entry["type"], entry["label"], entry["config"]["default"]),
+                         ("checkbox", "🔔 Notifications", True))
+        variables = [c["variable"] for c in self.plist["userconfigurationconfig"]]
+        self.assertEqual(variables.index("notify") + 1, variables.index("sound"))
+
+    def test_sound_choices_are_system_sounds(self):
+        entry = next(c for c in self.plist["userconfigurationconfig"] if c["variable"] == "sound")
+        values = [value for _, value in entry["config"]["pairs"]]
+        self.assertIn("", values)  # mute
+        self.assertNotIn("default", values)  # "Classic" was a Notificator sound
+        system = {"Basso", "Blow", "Bottle", "Frog", "Funk", "Glass", "Hero", "Morse", "Ping", "Pop", "Purr",
+                  "Sosumi", "Submarine", "Tink"}
+        self.assertTrue(set(values) - {""} <= system)
+
+    def test_readme_asks_for_alfred_6(self):
+        self.assertIn("Alfred 6", self.plist["readme"])
+        with open(os.path.join(ROOT, "README.md"), encoding="utf-8") as handle:
+            self.assertIn("Alfred 6", handle.read())

@@ -1,26 +1,25 @@
 """Build api.json (emoji list) and the icons folder."""
 
+from __future__ import annotations
+
 import datetime
 import subprocess
-from typing import Callable
 
 from . import emoji_data, icons, sources
-from .languages import language_title
-from .logs import fail, get_logger, notify
+from .logs import failure, get_logger, remove_notificator, success
 from .settings import Settings
 from .storage import write_json
 
 
 def build_api(
     settings: Settings,
-    languages,
-    fetch: sources.Fetcher = sources.fetch_url,
+    language_name: str,
+    fetch=sources.fetch_url,
     runner=subprocess.run,
-    notifier: Callable = notify,
-) -> bool:
-    """Refresh data + icons. Returns True on success; failures are reported to the user."""
+) -> tuple:
+    """Refresh data + icons. Returns the (title, text) notification; a failure keeps the old data."""
     logger = get_logger(settings)
-    notifier(settings, "⏳ Please wait !", "Emojis data is being gathered, this can take some time...")
+    remove_notificator(settings.cache_dir)
     try:
         emoji_test, annotations, derived = sources.fetch_all(settings.language, fetch)
         emojis = emoji_data.parse_emoji_test(emoji_test)
@@ -38,13 +37,10 @@ def build_api(
         items = emoji_data.build_items(emojis, index, icons.rendered_names(emojis, settings.icons_dir))
         info = {
             "time": datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
-            "lang": {"title": language_title(languages, settings.language), "value": settings.language},
+            "lang": {"title": language_name, "value": settings.language},
             "workflow_version": settings.workflow_version,
         }
-        write_json(settings.api_file, {"info": info, "items": items}, indent=1)
+        write_json(settings.api_file, {"info": info, "items": items})
     except Exception as exc:  # network, parsing or rendering: tell the user, keep the old data
-        fail(settings, "Something went wrong, check the logs and create a GitHub issue", exc)
-        return False
-    logger.info("API refreshed with language : %s", settings.language)
-    notifier(settings, "✅ Success !", "Data updated. You can search emojis")
-    return True
+        return failure(settings, "Something went wrong, check the logs and create a GitHub issue", exc)
+    return success(settings, "%d emojis ready in %s. You can search emojis" % (len(items), language_name))

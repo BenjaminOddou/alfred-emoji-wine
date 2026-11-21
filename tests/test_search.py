@@ -1,14 +1,15 @@
 import json
 import os
 import unittest
+from unittest import mock
 
 from tests.helpers import TempDirTestCase, make_settings
 from winelib import search
-from winelib.storage import write_json
+from winelib.storage import read_bytes, write_json
 
 API = {
     "info": {"time": "01-01-2026 10:00:00", "lang": {"title": "🇫🇷 Français", "value": "fr"},
-             "workflow_version": "2.0.0"},
+             "workflow_version": "2.1.0"},
     "items": [
         {"name": "grinning face", "emoji": "😀", "title": "visage souriant", "tags": ["visage", "😀"],
          "image": True, "skin_tones": ["base"]},
@@ -45,7 +46,8 @@ class Urls(TempDirTestCase):
 class Items(TempDirTestCase):
     def build(self, **overrides):
         s = make_settings(self.tmp, **overrides)
-        return s, search.build_items(API, [{"id": "a", "title": "joie", "emojis": ["😀"]}], s)
+        return s, [search.build_item(entry, s, ["joie"] if entry["emoji"] == "😀" else [])[0]
+                   for entry in API["items"]]
 
     def test_default_shortcuts(self):
         s, items = self.build()
@@ -55,8 +57,23 @@ class Items(TempDirTestCase):
         self.assertEqual(first["variables"], {"action": "copy"})
         self.assertEqual(first["mods"]["cmd"]["variables"], {"action": "paste"})
         self.assertEqual(first["mods"]["shift"]["arg"], "https://emojipedia.org/fr/visage-souriant")
-        self.assertIn("joie", first["match"])
         self.assertTrue(first["icon"]["path"].endswith("grinning face.png"))
+
+    def test_no_uid_and_no_match_in_the_list(self):
+        """No uid: Alfred learns nothing and keeps the script order. The list is filtered by the script."""
+        _, items = self.build()
+        self.assertTrue(all("uid" not in i and "match" not in i for i in items))
+
+    def test_grid_items_keep_match_for_the_grid_filter(self):
+        _, items = self.build(style="grid")
+        self.assertIn("joie", items[0]["match"])
+        self.assertNotIn("uid", items[0])
+
+    def test_search_text_is_normalized(self):
+        s = make_settings(self.tmp)
+        _, text = search.build_item(API["items"][0], s, ["Joie Été"])
+        self.assertIn("joie ete", text)
+        self.assertIn("visage souriant", text)
 
     def test_fallback_icon_when_no_image(self):
         _, items = self.build()
@@ -78,89 +95,115 @@ class Items(TempDirTestCase):
         self.assertIn("cmd", items[0]["mods"])
 
     def test_skin_tone_filter(self):
-        _, items = self.build(skin_tone="light skin tone")
-        self.assertEqual([i["uid"] for i in items], ["grinning face", "waving hand: light skin tone"])
-        _, items = self.build(skin_tone="none")
-        self.assertEqual([i["uid"] for i in items], ["grinning face", "waving hand"])
+        def shown(skin_tone):
+            s = make_settings(self.tmp, skin_tone=skin_tone)
+            return [json.loads(row[3])["title"] for row in search.Index.build(API, [], s).find("")]
+
+        self.assertEqual(shown("light skin tone"), ["visage souriant", "waving hand: light skin tone"])
+        self.assertEqual(shown("none"), ["visage souriant", "main qui salue"])
 
 
 def respond(settings, query=""):
-    return search.respond(settings, "x", query)
+    return json.loads(search.respond(settings, query, "x"))
+
+
+def titles(settings, query=""):
+    return [i["title"] for i in respond(settings, query)["items"]]
 
 
 class Response(TempDirTestCase):
+    def setUp(self):
+        super().setUp()
+        self.settings = make_settings(self.tmp)
+        write_json(self.settings.api_file, API)
+
     def test_no_api(self):
-        items = json.loads(respond(make_settings(self.tmp)))["items"]
+        items = respond(make_settings(os.path.join(self.tmp, "empty")))["items"]
         self.assertEqual(items[0]["title"], "No API detected")
         self.assertEqual(items[0]["variables"], {"action": "refresh"})
 
     def test_outdated_api(self):
         s = make_settings(self.tmp, workflow_version="9.9.9")
-        write_json(s.api_file, API)
-        items = json.loads(respond(s))["items"]
-        self.assertEqual(items[0]["title"], "Refresh the API")
+        self.assertEqual(respond(s)["items"][0]["title"], "Refresh the API")
 
     def test_language_mismatch(self):
         s = make_settings(self.tmp, language="en")
-        write_json(s.api_file, API)
-        self.assertEqual(json.loads(respond(s))["items"][0]["title"], "Refresh the API")
-        self.assertEqual(json.loads(respond(s, ">"))["items"][0]["title"], "Refresh the API")
+        self.assertEqual(respond(s)["items"][0]["title"], "Refresh the API")
+        self.assertEqual(respond(s, ">")["items"][0]["title"], "Refresh the API")
 
-    def test_cache_is_used_then_invalidated_by_tags(self):
-        s = make_settings(self.tmp)
-        write_json(s.api_file, API)
-        respond(s)
-        self.assertTrue(os.path.exists(s.search_cache_file))
-        write_json(s.search_cache_file, {"key": search.cache_key(s), "items": [{"title": "CACHED", "match": "c"}]})
-        self.assertIn("CACHED", respond(s))
-        write_json(s.tags_file, [{"id": "a", "title": "joie", "emojis": ["😀"]}])
-        fresh = respond(s)
-        self.assertNotIn("CACHED", fresh)
-        self.assertIn("joie", fresh)
+    def test_language_name_comes_from_the_plist_only_when_asking_for_a_refresh(self):
+        s = make_settings(self.tmp, language="en")
+        item = json.loads(search.respond(s, ""))["items"][0]
+        self.assertIn("🇬🇧 English", item["subtitle"])
+        with mock.patch("winelib.languages.load_languages", side_effect=AssertionError("plist read")):
+            json.loads(search.respond(self.settings, "main"))
+
+    def test_alfred6_keys_keep_the_script_order(self):
+        data = respond(self.settings)
+        self.assertEqual((data["skipknowledge"], data["strictmods"], data["iconresize"]), (True, True, "fit"))
+        self.assertTrue(all("uid" not in i for i in data["items"]))
+        self.assertTrue(respond(self.settings, ">")["skipknowledge"])
+        self.assertTrue(respond(make_settings(os.path.join(self.tmp, "empty")))["strictmods"])
+
+    def test_index_is_used_then_invalidated_by_tags(self):
+        respond(self.settings)
+        self.assertTrue(os.path.exists(self.settings.index_file))
+        index = search.Index.parse(read_bytes(self.settings.index_file), search.index_key(self.settings))
+        index.rows[0][3] = b'{"title":"CACHED"}'
+        with open(self.settings.index_file, "wb") as handle:
+            handle.write(index.serialize(search.index_key(self.settings)))
+        self.assertIn("CACHED", titles(self.settings))
+        write_json(self.settings.tags_file, [{"id": "a", "title": "joie", "emojis": ["😀"]}])
+        self.assertNotIn("CACHED", titles(self.settings))
+        self.assertEqual(titles(self.settings, "joie"), ["visage souriant"])
+
+    def test_corrupt_index_is_rebuilt(self):
+        with open(self.settings.index_file, "wb") as handle:
+            handle.write(b"garbage")
+        self.assertEqual(len(titles(self.settings)), 6)
+
+    def test_index_survives_unicode_line_separators(self):
+        api = json.loads(json.dumps(API))
+        api["items"][0]["title"] = "ligne deux"
+        write_json(self.settings.api_file, api)
+        respond(self.settings)
+        self.assertIn("ligne deux", titles(self.settings))
 
     def test_python_side_filtering(self):
-        s = make_settings(self.tmp)
-        write_json(s.api_file, API)
-        write_json(s.tags_file, [{"id": "a", "title": "Joie", "emojis": ["😀"]}])
-        titles = lambda q: [i["title"] for i in json.loads(respond(s, q))["items"]]
-        self.assertEqual(titles("joie"), ["visage souriant"])  # custom tag
-        self.assertEqual(titles("MAIN"), ["main qui salue"])  # case insensitive
-        self.assertEqual(titles("zzz"), [])
+        write_json(self.settings.tags_file, [{"id": "a", "title": "Joie", "emojis": ["😀"]}])
+        self.assertEqual(titles(self.settings, "joie"), ["visage souriant"])  # custom tag
+        self.assertEqual(titles(self.settings, "MAIN"), ["main qui salue"])  # case insensitive
+        self.assertEqual(titles(self.settings, "VISAGÉ sour"), ["visage souriant"])  # accents, several words
+        self.assertEqual(titles(self.settings, "zzz"), [])
 
     def test_data_items_pinned_on_top_of_empty_search(self):
-        s = make_settings(self.tmp)
-        write_json(s.api_file, API)
-        items = json.loads(respond(s))["items"]
+        items = respond(self.settings)["items"]
         self.assertEqual([i["title"] for i in items[:3]], ["Tags", "API information", "Refresh the API"])
         self.assertEqual((items[0]["valid"], items[0]["autocomplete"]), (False, ">tags›"))
         self.assertIn("3 Emojis", items[1]["subtitle"])
+        self.assertIn("🇫🇷 Français", items[1]["subtitle"])
         self.assertEqual(items[2]["variables"], {"action": "refresh"})
         self.assertEqual(len(items), 6)
 
     def test_pinned_items_hidden_while_typing_unless_they_match(self):
-        s = make_settings(self.tmp)
-        write_json(s.api_file, API)
-        titles = lambda q: [i["title"] for i in json.loads(respond(s, q))["items"]]
-        self.assertNotIn("Refresh the API", titles("main"))
-        self.assertEqual(titles("refresh"), ["Refresh the API"])
+        self.assertNotIn("Refresh the API", titles(self.settings, "main"))
+        self.assertEqual(titles(self.settings, "refresh"), ["Refresh the API"])
+        self.assertEqual(titles(self.settings, "ta")[0], "Tags")
 
     def test_tags_item_in_grid_reopens_alfred_on_the_menu(self):
         s = make_settings(self.tmp, style="grid")
-        write_json(s.api_file, API)
-        tags = json.loads(respond(s))["items"][0]
+        tags = respond(s)["items"][0]
         self.assertEqual((tags["arg"], tags["variables"]), (">tags›", {"action": "menu"}))
         self.assertNotIn("autocomplete", tags)
 
     def test_menu_mode(self):
-        s = make_settings(self.tmp)
-        write_json(s.api_file, API)
-        items = json.loads(respond(s, ">tags›"))["items"]
-        self.assertEqual(items[0]["title"], "Return")
+        self.assertEqual(respond(self.settings, ">tags›")["items"][0]["title"], "Return")
 
-    def test_cache_depends_on_settings(self):
-        a = search.cache_key(make_settings(self.tmp))
-        b = search.cache_key(make_settings(self.tmp, skin_tone="none"))
+    def test_index_key_depends_on_settings(self):
+        a = search.index_key(make_settings(self.tmp))
+        b = search.index_key(make_settings(self.tmp, skin_tone="none"))
         self.assertNotEqual(a, b)
+        self.assertNotIn("\n", a)
 
 
 if __name__ == "__main__":

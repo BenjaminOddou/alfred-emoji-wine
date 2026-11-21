@@ -9,9 +9,8 @@ from tests.test_search import API
 from winelib import navigation as nav
 from winelib import tag_actions, tags_store
 from winelib.alfred import matches
+from winelib.search import Index
 from winelib.storage import read_json, write_json
-
-LANG = "🇫🇷 Français"
 
 
 def titles(items):
@@ -80,7 +79,8 @@ class Menu(TempDirTestCase):
         self.tags = [{"id": "t1", "title": "joie", "emojis": ["😀"]}, {"id": "t2", "title": "vide", "emojis": []}]
 
     def menu(self, query, tags=None):
-        return nav.build_menu(query, API, self.tags if tags is None else tags, self.settings, LANG)
+        tags = self.tags if tags is None else tags
+        return nav.build_menu(query, Index.build(API, tags, self.settings), tags)
 
     def test_root(self):
         items = self.menu(">")
@@ -140,11 +140,25 @@ class Menu(TempDirTestCase):
         self.assertEqual(titles(items), ["Return", "visage souriant"])
         self.assertEqual(items[1]["variables"]["tag_op"], "unlink")
 
+    def test_unlink_picker_shows_every_skin_tone(self):
+        """A linked emoji hidden by the skin tone preference can still be unlinked."""
+        self.settings = make_settings(self.tmp, skin_tone="none")
+        tags = [{"id": "t1", "title": "salut", "emojis": ["👋🏻"]}]
+        items = self.menu(">tags›t1›unlink›", tags)
+        self.assertEqual(titles(items), ["Return", "waving hand: light skin tone"])
+        self.assertEqual(items[1]["arg"], "👋🏻")
+        self.assertEqual(titles(self.menu(">tags›t1›", tags))[-1], "waving hand: light skin tone")
+
+    def test_emoji_rows_use_the_search_items(self):
+        row = self.menu(">tags›t1›")[-1]
+        self.assertEqual((row["subtitle"], row["valid"]), ("😀", False))
+        self.assertTrue(row["icon"]["path"].endswith("grinning face.png"))
+
     def test_results_are_capped(self):
         api = {"info": API["info"], "items": [
             {"name": "e%d" % i, "emoji": "x%d" % i, "title": None, "tags": None, "image": False, "skin_tones": ["base"]}
             for i in range(500)]}
-        items = nav.build_menu(">tags›t2›link›", api, self.tags, self.settings, LANG)
+        items = nav.build_menu(">tags›t2›link›", Index.build(api, self.tags, self.settings), self.tags)
         self.assertEqual(len(items), nav.MAX_RESULTS + 1)
 
     def test_stale_breadcrumb_falls_back_to_tag_list(self):
@@ -177,7 +191,7 @@ class EntryPoints(TempDirTestCase):
         env = dict(os.environ, language="fr", skin_tone="all", sound="", padding="10",
                    emoji_dictionary="emojipedia.org", short_copy="arg", short_paste="cmd",
                    short_web="shift", alfred_workflow_cache=s.cache_dir, alfred_workflow_data=s.data_dir,
-                   alfred_workflow_version="2.0.0")
+                   alfred_workflow_version="2.1.0")
         write_json(s.api_file, API)
         return s, env
 
@@ -186,6 +200,11 @@ class EntryPoints(TempDirTestCase):
                               capture_output=True, text=True, cwd=self.tmp)
         self.assertEqual(done.returncode, 0, done.stderr)
         return done.stdout
+
+    def run_tags(self, env, op, tag_id, value):
+        """tags.py prints the Alfred JSON: arg (the menu query) + the notification variables."""
+        out = json.loads(self.run_script("tags.py", dict(env, tag_op=op, tag_id=tag_id), value))
+        return out["alfredworkflow"]["arg"], out["alfredworkflow"]["variables"]
 
     def test_wine(self):
         _, env = self.env()
@@ -202,20 +221,31 @@ class EntryPoints(TempDirTestCase):
 
     def test_tags_script_full_flow(self):
         s, env = self.env()
-        out = self.run_script("tags.py", dict(env, tag_op="create", tag_id=""), "joie")
-        self.assertEqual(out, ">tags›")
+        no_notification = {"notify_title": "", "notify_text": ""}
+        self.assertEqual(self.run_tags(env, "create", "", "joie"), (">tags›", no_notification))
         tag = read_json(s.tags_file)[0]
-        out = self.run_script("tags.py", dict(env, tag_op="link", tag_id=tag["id"]), "😀")
-        self.assertEqual(out, ">tags›%s›link›" % tag["id"])
+        self.assertEqual(self.run_tags(env, "link", tag["id"], "😀")[0], ">tags›%s›link›" % tag["id"])
         self.assertEqual(read_json(s.tags_file)[0]["emojis"], ["😀"])
-        out = self.run_script("tags.py", dict(env, tag_op="delete", tag_id=tag["id"]), "")
+        items = json.loads(self.run_script("wine.py", env, "joie"))["items"]
+        self.assertEqual([i["title"] for i in items], ["visage souriant"])  # index rebuilt with the tag
+        self.run_tags(env, "delete", tag["id"], "")
         self.assertEqual(read_json(s.tags_file), [])
 
-    def test_tags_script_bad_operation_does_not_crash(self):
+    def test_tags_script_bad_operation_notifies_an_error(self):
         s, env = self.env()
-        env["sound"] = ""
-        out = self.run_script("tags.py", dict(env, tag_op="nope", tag_id=""), "x")
-        self.assertEqual(out, ">tags›")
+        arg, variables = self.run_tags(env, "nope", "", "x")
+        self.assertEqual(arg, ">tags›")
+        self.assertEqual(variables["notify_title"], "🚨 Error!")
+        self.assertIn("GitHub issue", variables["notify_text"])
+        with open(s.log_file, encoding="utf-8") as handle:
+            self.assertIn("invalid tag operation", handle.read())
+
+    def test_tags_script_is_silent_with_notifications_off(self):
+        s, env = self.env()
+        env["notify"] = "0"
+        self.assertEqual(self.run_tags(env, "nope", "", "x"), (">tags›", {"notify_title": "", "notify_text": ""}))
+        with open(s.log_file, encoding="utf-8") as handle:
+            self.assertIn("invalid tag operation", handle.read())  # still logged
 
 
 if __name__ == "__main__":

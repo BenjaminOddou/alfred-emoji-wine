@@ -50,7 +50,7 @@ def make_settings(tmp: str, **overrides) -> Settings:
         cache_dir=os.path.join(tmp, "cache"),
         data_dir=os.path.join(tmp, "data"),
         workflow_dir=SRC,
-        workflow_version="2.0.0",
+        workflow_version="2.1.0",
     )
     values.update(overrides)
     settings = Settings(**values)

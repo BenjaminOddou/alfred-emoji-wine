@@ -1,32 +1,50 @@
-"""Small JSON helpers: tolerant reads, atomic writes."""
+"""Small file helpers: tolerant reads, atomic writes."""
 
-import json
+from __future__ import annotations
+
 import os
-import tempfile
-from typing import Any, Optional
 
 
-def read_json(path: str) -> Optional[Any]:
-    """Return parsed JSON, or None when the file is missing, empty or corrupt."""
+def read_bytes(path: str) -> bytes | None:
+    """Return the file content, or None when it is missing or unreadable."""
     try:
-        if os.path.getsize(path) == 0:
-            return None
-        with open(path, "r", encoding="utf-8") as handle:
-            return json.load(handle)
-    except (OSError, ValueError):
+        with open(path, "rb") as handle:
+            return handle.read()
+    except OSError:
         return None
 
 
-def write_json(path: str, data: Any, indent: Optional[int] = None) -> None:
-    """Write JSON atomically so Alfred never reads a half-written file."""
+def read_json(path: str):
+    """Return parsed JSON, or None when the file is missing, empty or corrupt."""
+    data = read_bytes(path)
+    if not data:
+        return None
+    import json  # lazy, like everywhere on the search path
+
+    try:
+        return json.loads(data)
+    except ValueError:
+        return None
+
+
+def write_file(path: str, data: bytes) -> None:
+    """Write atomically so Alfred never reads a half-written file."""
     folder = os.path.dirname(path) or "."
     os.makedirs(folder, exist_ok=True)
-    fd, tmp = tempfile.mkstemp(dir=folder, suffix=".tmp")
+    tmp = os.path.join(folder, ".%s.%s.tmp" % (os.path.basename(path), os.urandom(4).hex()))
     try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            json.dump(data, handle, ensure_ascii=False, indent=indent)
+        with open(tmp, "xb") as handle:
+            handle.write(data)
         os.replace(tmp, path)
     except BaseException:
-        if os.path.exists(tmp):
+        try:
             os.unlink(tmp)
+        except OSError:
+            pass
         raise
+
+
+def write_json(path: str, data, indent: int | None = None) -> None:
+    import json
+
+    write_file(path, json.dumps(data, ensure_ascii=False, indent=indent).encode())
