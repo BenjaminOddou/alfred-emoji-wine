@@ -198,30 +198,6 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>2A1FDC27-9D25-5528-B107-C81B6201ADC3</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>sourceoutputuid</key>
-				<string>C44E2BDB-E4E2-5283-ABF6-A965B80E1A88</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>5D6B89E0-1DF1-557F-A518-639CD25FF936</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>sourceoutputuid</key>
-				<string>A9D82767-04E5-5C31-9A35-9FBC7D864B69</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
 				<string>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -241,6 +217,30 @@
 				<string></string>
 				<key>sourceoutputuid</key>
 				<string>B7B61E32-E888-5229-B31A-5D2573DA153E</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>2A1FDC27-9D25-5528-B107-C81B6201ADC3</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>C44E2BDB-E4E2-5283-ABF6-A965B80E1A88</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>5D6B89E0-1DF1-557F-A518-639CD25FF936</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>A9D82767-04E5-5C31-9A35-9FBC7D864B69</string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -285,98 +285,21 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>1</integer>
-				<key>keyword</key>
-				<string>{var:trigger1}</string>
-				<key>subtext</key>
-				<string>🍷 Find the most refined emojis ǀ type &gt; for tags &amp; data</string>
-				<key>text</key>
-				<string>Emoji Wine</string>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>F6E3A1EF-E47D-572E-A089-C2D082F04E86</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>availableviaurlhandler</key>
+				<key>autopaste</key>
 				<false/>
-				<key>triggerid</key>
-				<string>emoji</string>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.trigger.external</string>
+			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
-			<string>258E81E4-E8DA-5901-ACC2-7DA1361A368D</string>
+			<string>47E00F40-7930-5460-A39B-D24C01267482</string>
 			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>conditions</key>
-				<array>
-					<dict>
-						<key>inputstring</key>
-						<string>{query}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>4</integer>
-						<key>matchstring</key>
-						<string>^\s*&gt;</string>
-						<key>outputlabel</key>
-						<string>menu</string>
-						<key>uid</key>
-						<string>156C4926-1509-5FB2-8BFA-CC1F9652A34B</string>
-					</dict>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:style}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>list</string>
-						<key>outputlabel</key>
-						<string>list</string>
-						<key>uid</key>
-						<string>D7F18ABE-BCAF-51A7-AEFA-5BDA3CE3ECAE</string>
-					</dict>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:style}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>grid</string>
-						<key>outputlabel</key>
-						<string>grid</string>
-						<key>uid</key>
-						<string>A7A27322-EF4D-5E9B-A3C0-1E987CCEA4AD</string>
-					</dict>
-				</array>
-				<key>elselabel</key>
-				<string>else</string>
-				<key>hideelse</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.conditional</string>
-			<key>uid</key>
-			<string>3801ECA3-C475-5F9D-B491-DCFA4C99B46E</string>
-			<key>version</key>
-			<integer>1</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -428,33 +351,40 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>columncount</key>
-				<integer>5</integer>
-				<key>filterable</key>
+				<key>autopaste</key>
 				<true/>
-				<key>fixedorder</key>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
 				<true/>
-				<key>imageaspect</key>
-				<integer>2</integer>
-				<key>inputfile</key>
-				<string>wine.py</string>
-				<key>inputtype</key>
-				<integer>1</integer>
-				<key>loadingtext</key>
-				<string>Loading emojis...</string>
-				<key>showsubtitles</key>
-				<false/>
-				<key>showtitles</key>
-				<true/>
-				<key>subtitlesinfooter</key>
-				<false/>
-				<key>titlesinfooter</key>
-				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.userinterface.grid</string>
+			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
-			<string>F8077696-9DBB-558B-8564-626CDD54BC16</string>
+			<string>5AA8CC19-1BBB-53A5-9658-29A366B352C3</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>keyword</key>
+				<string>{var:trigger1}</string>
+				<key>subtext</key>
+				<string>🍷 Find the most refined emojis ǀ type &gt; for tags &amp; data</string>
+				<key>text</key>
+				<string>Emoji Wine</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>F6E3A1EF-E47D-572E-A089-C2D082F04E86</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -563,40 +493,62 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<false/>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{query}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>4</integer>
+						<key>matchstring</key>
+						<string>^\s*&gt;</string>
+						<key>outputlabel</key>
+						<string>menu</string>
+						<key>uid</key>
+						<string>156C4926-1509-5FB2-8BFA-CC1F9652A34B</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:style}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>list</string>
+						<key>outputlabel</key>
+						<string>list</string>
+						<key>uid</key>
+						<string>D7F18ABE-BCAF-51A7-AEFA-5BDA3CE3ECAE</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:style}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>grid</string>
+						<key>outputlabel</key>
+						<string>grid</string>
+						<key>uid</key>
+						<string>A7A27322-EF4D-5E9B-A3C0-1E987CCEA4AD</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>else</string>
+				<key>hideelse</key>
+				<true/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
+			<string>alfred.workflow.utility.conditional</string>
 			<key>uid</key>
-			<string>47E00F40-7930-5460-A39B-D24C01267482</string>
+			<string>3801ECA3-C475-5F9D-B491-DCFA4C99B46E</string>
 			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<true/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>5AA8CC19-1BBB-53A5-9658-29A366B352C3</string>
-			<key>version</key>
-			<integer>3</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -622,6 +574,107 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>columncount</key>
+				<integer>5</integer>
+				<key>filterable</key>
+				<true/>
+				<key>fixedorder</key>
+				<true/>
+				<key>imageaspect</key>
+				<integer>2</integer>
+				<key>inputfile</key>
+				<string>wine.py</string>
+				<key>inputtype</key>
+				<integer>1</integer>
+				<key>loadingtext</key>
+				<string>Loading emojis...</string>
+				<key>showsubtitles</key>
+				<false/>
+				<key>showtitles</key>
+				<true/>
+				<key>subtitlesinfooter</key>
+				<false/>
+				<key>titlesinfooter</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.userinterface.grid</string>
+			<key>uid</key>
+			<string>F8077696-9DBB-558B-8564-626CDD54BC16</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>availableviaurlhandler</key>
+				<false/>
+				<key>triggerid</key>
+				<string>emoji</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.external</string>
+			<key>uid</key>
+			<string>258E81E4-E8DA-5901-ACC2-7DA1361A368D</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>Emoji data is being gathered, this can take some time...</string>
+				<key>title</key>
+				<string>⏳ Please wait!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:notify}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>0</string>
+						<key>outputlabel</key>
+						<string>silent</string>
+						<key>uid</key>
+						<string>2BF06E69-156F-505E-B44E-EECB8CE2F1F6</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>notify</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -641,6 +694,59 @@
 			<string>08BD6434-D4F1-5AB3-8520-7A8CA4C3A230</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>availableviaurlhandler</key>
+				<false/>
+				<key>triggerid</key>
+				<string>api</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.external</string>
+			<key>uid</key>
+			<string>98D363C5-40AD-50D5-97F1-CBFADC328AD9</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>{var:notify_title}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>80D50FEB-2BB3-5C09-A505-8E893AEDDF56</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{var:notify_text}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -681,112 +787,6 @@
 			<string>alfred.workflow.output.callexternaltrigger</string>
 			<key>uid</key>
 			<string>5D6B89E0-1DF1-557F-A518-639CD25FF936</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>availableviaurlhandler</key>
-				<false/>
-				<key>triggerid</key>
-				<string>api</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.external</string>
-			<key>uid</key>
-			<string>98D363C5-40AD-50D5-97F1-CBFADC328AD9</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<false/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>Emoji data is being gathered, this can take some time...</string>
-				<key>title</key>
-				<string>⏳ Please wait!</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argument</key>
-				<string>{var:notify_text}</string>
-				<key>passthroughargument</key>
-				<false/>
-				<key>variables</key>
-				<dict/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
-			<key>uid</key>
-			<string>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>{var:notify_title}</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>80D50FEB-2BB3-5C09-A505-8E893AEDDF56</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>conditions</key>
-				<array>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:notify}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>0</string>
-						<key>outputlabel</key>
-						<string>silent</string>
-						<key>uid</key>
-						<string>2BF06E69-156F-505E-B44E-EECB8CE2F1F6</string>
-					</dict>
-				</array>
-				<key>elselabel</key>
-				<string>notify</string>
-				<key>hideelse</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.conditional</string>
-			<key>uid</key>
-			<string>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -831,9 +831,9 @@ download Unicode + CLDR,
 render icons, write api.json
 → prints the notification</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>790</real>
 			<key>ypos</key>
-			<real>420.0</real>
+			<real>420</real>
 		</dict>
 		<key>258E81E4-E8DA-5901-ACC2-7DA1361A368D</key>
 		<dict>
@@ -842,9 +842,9 @@ render icons, write api.json
 also used to come back
 to the menu</string>
 			<key>xpos</key>
-			<real>30.0</real>
+			<real>30</real>
 			<key>ypos</key>
-			<real>240.0</real>
+			<real>240</real>
 		</dict>
 		<key>2A1FDC27-9D25-5528-B107-C81B6201ADC3</key>
 		<dict>
@@ -856,9 +856,9 @@ create / rename / delete tags,
 link / unlink emojis
 → prints the menu query</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>790</real>
 			<key>ypos</key>
-			<real>520.0</real>
+			<real>520</real>
 		</dict>
 		<key>370F85E8-55A8-5737-97C8-AD411108FA3E</key>
 		<dict>
@@ -866,9 +866,9 @@ link / unlink emojis
 			<string>Open the emoji page
 in the online dictionary</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>790</real>
 			<key>ypos</key>
-			<real>220.0</real>
+			<real>220</real>
 		</dict>
 		<key>3801ECA3-C475-5F9D-B491-DCFA4C99B46E</key>
 		<dict>
@@ -876,18 +876,18 @@ in the online dictionary</string>
 			<string>Menu query (&gt;) or
 🪩 Style : list / grid</string>
 			<key>xpos</key>
-			<real>210.0</real>
+			<real>211</real>
 			<key>ypos</key>
-			<real>180.0</real>
+			<real>180</real>
 		</dict>
 		<key>47E00F40-7930-5460-A39B-D24C01267482</key>
 		<dict>
 			<key>note</key>
 			<string>Copy the emoji</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>790</real>
 			<key>ypos</key>
-			<real>20.0</real>
+			<real>20</real>
 		</dict>
 		<key>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</key>
 		<dict>
@@ -895,9 +895,9 @@ in the online dictionary</string>
 			<string>{var:notify_text}
 (empty: no notification)</string>
 			<key>xpos</key>
-			<real>990.0</real>
+			<real>990</real>
 			<key>ypos</key>
-			<real>470.0</real>
+			<real>470</real>
 		</dict>
 		<key>5AA8CC19-1BBB-53A5-9658-29A366B352C3</key>
 		<dict>
@@ -905,9 +905,9 @@ in the online dictionary</string>
 			<string>Paste the emoji
 in the frontmost app</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>790</real>
 			<key>ypos</key>
-			<real>120.0</real>
+			<real>120</real>
 		</dict>
 		<key>5D6B89E0-1DF1-557F-A518-639CD25FF936</key>
 		<dict>
@@ -915,9 +915,9 @@ in the frontmost app</string>
 			<string>Reopen Alfred on the query
 (menu level, Return, Back to search)</string>
 			<key>xpos</key>
-			<real>990.0</real>
+			<real>990</real>
 			<key>ypos</key>
-			<real>570.0</real>
+			<real>570</real>
 		</dict>
 		<key>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</key>
 		<dict>
@@ -925,9 +925,9 @@ in the frontmost app</string>
 			<string>🔔 Notifications
 unticked: silent</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>790</real>
 			<key>ypos</key>
-			<real>320.0</real>
+			<real>320</real>
 		</dict>
 		<key>63B3CD08-C844-563A-8243-04514E5EEA27</key>
 		<dict>
@@ -936,9 +936,9 @@ unticked: silent</string>
 search, or menu when
 the query starts with &gt;</string>
 			<key>xpos</key>
-			<real>390.0</real>
+			<real>390</real>
 			<key>ypos</key>
-			<real>120.0</real>
+			<real>120</real>
 		</dict>
 		<key>80D50FEB-2BB3-5C09-A505-8E893AEDDF56</key>
 		<dict>
@@ -948,18 +948,18 @@ the query starts with &gt;</string>
 			<string>Notification posted by Alfred 6
 (end of a refresh, errors)</string>
 			<key>xpos</key>
-			<real>1190.0</real>
+			<real>1190</real>
 			<key>ypos</key>
-			<real>470.0</real>
+			<real>470</real>
 		</dict>
 		<key>98D363C5-40AD-50D5-97F1-CBFADC328AD9</key>
 		<dict>
 			<key>note</key>
 			<string>External trigger "api"</string>
 			<key>xpos</key>
-			<real>590.0</real>
+			<real>590</real>
 			<key>ypos</key>
-			<real>420.0</real>
+			<real>420</real>
 		</dict>
 		<key>A55563EE-0655-56FA-837C-3A74287E68BC</key>
 		<dict>
@@ -967,9 +967,9 @@ the query starts with &gt;</string>
 			<string>⏳ Notification:
 data download started</string>
 			<key>xpos</key>
-			<real>990.0</real>
+			<real>990</real>
 			<key>ypos</key>
-			<real>320.0</real>
+			<real>320</real>
 		</dict>
 		<key>D3DD505F-D4E9-5416-A5DB-9843C96C4371</key>
 		<dict>
@@ -977,9 +977,9 @@ data download started</string>
 			<string>Routes on {var:action}
 set by wine.py</string>
 			<key>xpos</key>
-			<real>590.0</real>
+			<real>592</real>
 			<key>ypos</key>
-			<real>180.0</real>
+			<real>180</real>
 		</dict>
 		<key>F6E3A1EF-E47D-572E-A089-C2D082F04E86</key>
 		<dict>
@@ -987,18 +987,18 @@ set by wine.py</string>
 			<string>Keyword 🕹️ Trigger
 (the only keyword)</string>
 			<key>xpos</key>
-			<real>30.0</real>
+			<real>30</real>
 			<key>ypos</key>
-			<real>120.0</real>
+			<real>120</real>
 		</dict>
 		<key>F8077696-9DBB-558B-8564-626CDD54BC16</key>
 		<dict>
 			<key>note</key>
 			<string>wine.py — grid view</string>
 			<key>xpos</key>
-			<real>390.0</real>
+			<real>390</real>
 			<key>ypos</key>
-			<real>240.0</real>
+			<real>240</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
