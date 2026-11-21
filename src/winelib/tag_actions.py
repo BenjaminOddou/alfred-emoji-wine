@@ -1,29 +1,23 @@
 """Apply a tag operation chosen in the menu and report where to navigate next."""
 
-from typing import Dict, List, Optional
+from __future__ import annotations
 
 from . import navigation as nav
 from . import tags_store as store
 
 
-def apply_operation(tags: List[Dict], op: str, tag_id: str, value: str) -> Optional[str]:
+def apply_operation(tags: list, op: str, tag_id: str, value: str) -> str | None:
     """Mutate `tags` in place. Returns the next query, or None when the operation is invalid."""
     if op == nav.OP_CREATE:
-        if not value.strip():
-            return None
-        store.create_tag(tags, value)
-    elif op == nav.OP_DELETE:
-        if not store.delete_tag(tags, tag_id):
-            return None
+        ok = bool(value.strip()) and bool(store.create_tag(tags, value))
     elif op == nav.OP_RENAME:
-        if not value.strip() or not store.rename_tag(tags, tag_id, value):
-            return None
+        ok = bool(value.strip()) and store.rename_tag(tags, tag_id, value)
+    elif op == nav.OP_DELETE:
+        ok = store.delete_tag(tags, tag_id)
     elif op == nav.OP_LINK:
-        if not store.link_emoji(tags, tag_id, value):
-            return None
+        ok = store.link_emoji(tags, tag_id, value)
     elif op == nav.OP_UNLINK:
-        if not store.unlink_emoji(tags, tag_id, value):
-            return None
+        ok = store.unlink_emoji(tags, tag_id, value)
     else:
-        return None
-    return nav.next_query(op, tag_id)
+        ok = False
+    return nav.next_query(op, tag_id) if ok else None

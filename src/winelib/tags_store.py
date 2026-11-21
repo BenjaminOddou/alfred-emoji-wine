@@ -1,33 +1,32 @@
 """Custom tags: {id, title, emojis[]} stored per language."""
 
-import secrets
-from typing import Dict, List, Optional
+from __future__ import annotations
+
+import os
 
 from .storage import read_json, write_json
 
-Tag = Dict[str, object]
 
-
-def load_tags(path: str) -> List[Tag]:
+def load_tags(path: str) -> list:
     data = read_json(path)
     return data if isinstance(data, list) else []
 
 
-def save_tags(path: str, tags: List[Tag]) -> None:
+def save_tags(path: str, tags: list) -> None:
     write_json(path, tags, indent=4)
 
 
-def find_tag(tags: List[Tag], tag_id: str) -> Optional[Tag]:
+def find_tag(tags: list, tag_id: str) -> dict | None:
     return next((t for t in tags if t["id"] == tag_id), None)
 
 
-def create_tag(tags: List[Tag], title: str) -> Tag:
-    tag = {"id": secrets.token_hex(6), "title": title.strip(), "emojis": []}
+def create_tag(tags: list, title: str) -> dict:
+    tag = {"id": os.urandom(6).hex(), "title": title.strip(), "emojis": []}
     tags.append(tag)
     return tag
 
 
-def delete_tag(tags: List[Tag], tag_id: str) -> bool:
+def delete_tag(tags: list, tag_id: str) -> bool:
     tag = find_tag(tags, tag_id)
     if tag is None:
         return False
@@ -35,7 +34,7 @@ def delete_tag(tags: List[Tag], tag_id: str) -> bool:
     return True
 
 
-def rename_tag(tags: List[Tag], tag_id: str, title: str) -> bool:
+def rename_tag(tags: list, tag_id: str, title: str) -> bool:
     tag = find_tag(tags, tag_id)
     if tag is None:
         return False
@@ -43,7 +42,7 @@ def rename_tag(tags: List[Tag], tag_id: str, title: str) -> bool:
     return True
 
 
-def link_emoji(tags: List[Tag], tag_id: str, emoji: str) -> bool:
+def link_emoji(tags: list, tag_id: str, emoji: str) -> bool:
     tag = find_tag(tags, tag_id)
     if tag is None:
         return False
@@ -52,7 +51,7 @@ def link_emoji(tags: List[Tag], tag_id: str, emoji: str) -> bool:
     return True
 
 
-def unlink_emoji(tags: List[Tag], tag_id: str, emoji: str) -> bool:
+def unlink_emoji(tags: list, tag_id: str, emoji: str) -> bool:
     tag = find_tag(tags, tag_id)
     if tag is None or emoji not in tag["emojis"]:
         return False
@@ -60,9 +59,9 @@ def unlink_emoji(tags: List[Tag], tag_id: str, emoji: str) -> bool:
     return True
 
 
-def emoji_tags_index(tags: List[Tag]) -> Dict[str, List[str]]:
+def emoji_tags_index(tags: list) -> dict:
     """{emoji: [tag titles]} for fast search enrichment."""
-    index: Dict[str, List[str]] = {}
+    index: dict = {}
     for tag in tags:
         for emoji in tag["emojis"]:
             index.setdefault(emoji, []).append(tag["title"])

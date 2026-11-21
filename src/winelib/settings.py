@@ -1,32 +1,49 @@
 """Workflow settings, read once from the environment Alfred provides."""
 
+from __future__ import annotations
+
 import os
-from dataclasses import dataclass
-from typing import Mapping, Optional
 
 DEFAULT_PADDING = 10
 ICON_SIZE = 64
-SHORTCUT_DISABLED = "False"  # value of the "Desactivated" popup entry
+SHORTCUT_DISABLED = "False"  # value of the "Deactivated" popup entry
 SHORTCUT_ARG = "arg"  # plain ⏎, no modifier
 
 DICTIONARIES = ("emojipedia.org", "emojiterra.com", "emojiall.com")
 
+# attribute: default. A plain class (no dataclass): the Script Filter runs at every keystroke.
+DEFAULTS = {
+    "language": "en",
+    "skin_tone": "all",
+    "sound": "",
+    "padding": DEFAULT_PADDING,
+    "emoji_dictionary": "emojipedia.org",
+    "short_copy": "arg",
+    "short_paste": "cmd",
+    "short_web": "shift",
+    "cache_dir": "",
+    "data_dir": "",
+    "workflow_dir": "",
+    "workflow_version": "",
+    "style": "list",
+}
+# attribute: environment variable, when they differ
+ENV_NAMES = {
+    "cache_dir": "alfred_workflow_cache",
+    "data_dir": "alfred_workflow_data",
+    "workflow_version": "alfred_workflow_version",
+}
 
-@dataclass(frozen=True)
+
 class Settings:
-    language: str = "en"
-    skin_tone: str = "all"
-    sound: str = ""
-    padding: int = DEFAULT_PADDING
-    emoji_dictionary: str = "emojipedia.org"
-    short_copy: str = "arg"
-    short_paste: str = "cmd"
-    short_web: str = "shift"
-    cache_dir: str = ""
-    data_dir: str = ""
-    workflow_dir: str = ""
-    workflow_version: str = ""
-    style: str = "list"
+    __slots__ = tuple(DEFAULTS)
+
+    def __init__(self, **values) -> None:
+        unknown = set(values) - set(DEFAULTS)
+        if unknown:
+            raise TypeError("unknown settings: %s" % ", ".join(sorted(unknown)))
+        for name, default in DEFAULTS.items():
+            setattr(self, name, values.get(name, default))
 
     # ---- derived paths -------------------------------------------------
     @property
@@ -46,16 +63,16 @@ class Settings:
         return os.path.join(self.workflow_dir, "icons", "assets")
 
     @property
-    def search_cache_file(self) -> str:
-        return os.path.join(self.cache_dir, "search_items.json")
+    def plist_file(self) -> str:
+        return os.path.join(self.workflow_dir, "info.plist")
+
+    @property
+    def index_file(self) -> str:
+        return os.path.join(self.cache_dir, "search.index")
 
     @property
     def log_file(self) -> str:
         return os.path.join(self.cache_dir, "emoji_wine.log")
-
-    @property
-    def notificator(self) -> str:
-        return os.path.join(self.workflow_dir, "notificator")
 
     @property
     def dictionary_icon(self) -> str:
@@ -73,33 +90,21 @@ class Settings:
             self.short_web,
             self.workflow_version,
             self.style,
+            self.padding,
+            self.cache_dir,
         )
 
     # ---- construction --------------------------------------------------
     @classmethod
-    def from_env(
-        cls, environ: Optional[Mapping[str, str]] = None, workflow_dir: Optional[str] = None
-    ) -> "Settings":
+    def from_env(cls, environ=None, workflow_dir: str | None = None) -> Settings:
         env = os.environ if environ is None else environ
+        values = {name: env.get(ENV_NAMES.get(name, name), default) for name, default in DEFAULTS.items()}
         try:
-            padding = int(str(env.get("padding", DEFAULT_PADDING)).strip())
+            values["padding"] = max(0, int(str(values["padding"]).strip()))
         except ValueError:
-            padding = DEFAULT_PADDING
-        settings = cls(
-            language=env.get("language", "en"),
-            skin_tone=env.get("skin_tone", "all"),
-            sound=env.get("sound", ""),
-            padding=max(0, padding),
-            emoji_dictionary=env.get("emoji_dictionary", "emojipedia.org"),
-            short_copy=env.get("short_copy", "arg"),
-            short_paste=env.get("short_paste", "cmd"),
-            short_web=env.get("short_web", "shift"),
-            cache_dir=env.get("alfred_workflow_cache", ""),
-            data_dir=env.get("alfred_workflow_data", ""),
-            workflow_dir=workflow_dir or os.getcwd(),
-            workflow_version=env.get("alfred_workflow_version", ""),
-            style=env.get("style", "list"),
-        )
+            values["padding"] = DEFAULT_PADDING
+        values["workflow_dir"] = workflow_dir or os.getcwd()
+        settings = cls(**values)
         for folder in (settings.cache_dir, settings.data_dir):
             if folder:
                 os.makedirs(folder, exist_ok=True)

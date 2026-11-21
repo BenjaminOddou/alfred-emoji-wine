@@ -8,6 +8,19 @@
 	<string>Tools</string>
 	<key>connections</key>
 	<dict>
+		<key>08BD6434-D4F1-5AB3-8520-7A8CA4C3A230</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>258E81E4-E8DA-5901-ACC2-7DA1361A368D</key>
 		<array>
 			<dict>
@@ -23,6 +36,16 @@
 		</array>
 		<key>2A1FDC27-9D25-5528-B107-C81B6201ADC3</key>
 		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
 			<dict>
 				<key>destinationuid</key>
 				<string>5D6B89E0-1DF1-557F-A518-639CD25FF936</string>
@@ -73,6 +96,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>80D50FEB-2BB3-5C09-A505-8E893AEDDF56</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>63B3CD08-C844-563A-8243-04514E5EEA27</key>
 		<array>
 			<dict>
@@ -88,6 +124,16 @@
 		</array>
 		<key>98D363C5-40AD-50D5-97F1-CBFADC328AD9</key>
 		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
 			<dict>
 				<key>destinationuid</key>
 				<string>08BD6434-D4F1-5AB3-8520-7A8CA4C3A230</string>
@@ -139,18 +185,6 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>08BD6434-D4F1-5AB3-8520-7A8CA4C3A230</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>sourceoutputuid</key>
-				<string>B7B61E32-E888-5229-B31A-5D2573DA153E</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
 				<string>2A1FDC27-9D25-5528-B107-C81B6201ADC3</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -170,6 +204,30 @@
 				<string></string>
 				<key>sourceoutputuid</key>
 				<string>A9D82767-04E5-5C31-9A35-9FBC7D864B69</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>B7B61E32-E888-5229-B31A-5D2573DA153E</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>08BD6434-D4F1-5AB3-8520-7A8CA4C3A230</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>B7B61E32-E888-5229-B31A-5D2573DA153E</string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -628,6 +686,65 @@
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>Emoji data is being gathered, this can take some time...</string>
+				<key>title</key>
+				<string>⏳ Please wait!</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{var:notify_text}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>{var:notify_title}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>80D50FEB-2BB3-5C09-A505-8E893AEDDF56</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string># 🍷 Alfred Emoji Wine
@@ -636,16 +753,18 @@
 
 ## ✅ Prerequisites
 
-* macOS and Alfred 5 with the [Powerpack](https://www.alfredapp.com/powerpack/).
+* macOS and **Alfred 6** with the [Powerpack](https://www.alfredapp.com/powerpack/).
 * **Python 3.8** or above (`python3 --version`). No other dependency: icons are rendered with the macOS built-in tools.
 
 ## 🧙‍♂️ Usage
 
 1. Type `wine` and press ⏎ on **No API detected** to download the emojis in your language.
 2. Type `wine` and search an emoji.
-   * ⏎ copies it, ⌘⏎ pastes it, ⇧⏎ opens its dictionary page (all configurable).
-3. **Tags**, **API information** and **Refresh the API** are pinned at the top of `wine` (`wine &gt;` opens the same menu): create custom tags and link them to emojis.
+   * ⏎ copies it, ⌘⏎ pastes it, ⇧⏎ opens its dictionary page (all configurable). A deactivated shortcut does nothing.
+3. **Tags**, **API information** and **Refresh the API** are always at the top of `wine` (`wine &gt;` opens the same menu): create custom tags and link them to emojis.
    ⏎ or ⇥ to go forward, **Return** to go back one level, **Back to search** to search emojis, and type to filter or to name a tag.
+
+Alfred posts the notifications itself (end of a refresh, errors), with the `🎷 Notification sound`.
 
 You can edit the trigger (flagged with 🕹️) and every other option in the user configuration panel.
 
@@ -664,11 +783,12 @@ Go to the dedicated [GitHub repository](https://github.com/BenjaminOddou/alfred-
 			<key>note</key>
 			<string>refresh.py
 download Unicode + CLDR,
-render icons, write api.json</string>
+render icons, write api.json
+→ prints the notification</string>
 			<key>xpos</key>
 			<real>790.0</real>
 			<key>ypos</key>
-			<real>320.0</real>
+			<real>420.0</real>
 		</dict>
 		<key>258E81E4-E8DA-5901-ACC2-7DA1361A368D</key>
 		<dict>
@@ -693,7 +813,7 @@ link / unlink emojis
 			<key>xpos</key>
 			<real>790.0</real>
 			<key>ypos</key>
-			<real>420.0</real>
+			<real>520.0</real>
 		</dict>
 		<key>370F85E8-55A8-5737-97C8-AD411108FA3E</key>
 		<dict>
@@ -724,6 +844,16 @@ in the online dictionary</string>
 			<key>ypos</key>
 			<real>20.0</real>
 		</dict>
+		<key>4DD52EE9-BA7E-564A-B546-0B9DC19FFE45</key>
+		<dict>
+			<key>note</key>
+			<string>{var:notify_text}
+(empty: no notification)</string>
+			<key>xpos</key>
+			<real>990.0</real>
+			<key>ypos</key>
+			<real>470.0</real>
+		</dict>
 		<key>5AA8CC19-1BBB-53A5-9658-29A366B352C3</key>
 		<dict>
 			<key>note</key>
@@ -742,7 +872,7 @@ in the frontmost app</string>
 			<key>xpos</key>
 			<real>990.0</real>
 			<key>ypos</key>
-			<real>470.0</real>
+			<real>570.0</real>
 		</dict>
 		<key>63B3CD08-C844-563A-8243-04514E5EEA27</key>
 		<dict>
@@ -755,12 +885,34 @@ the query starts with &gt;</string>
 			<key>ypos</key>
 			<real>120.0</real>
 		</dict>
+		<key>80D50FEB-2BB3-5C09-A505-8E893AEDDF56</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>2</integer>
+			<key>note</key>
+			<string>Notification posted by Alfred 6
+(end of a refresh, errors)</string>
+			<key>xpos</key>
+			<real>1190.0</real>
+			<key>ypos</key>
+			<real>470.0</real>
+		</dict>
 		<key>98D363C5-40AD-50D5-97F1-CBFADC328AD9</key>
 		<dict>
 			<key>note</key>
 			<string>External trigger "api"</string>
 			<key>xpos</key>
 			<real>590.0</real>
+			<key>ypos</key>
+			<real>420.0</real>
+		</dict>
+		<key>A55563EE-0655-56FA-837C-3A74287E68BC</key>
+		<dict>
+			<key>note</key>
+			<string>⏳ Notification:
+data download started</string>
+			<key>xpos</key>
+			<real>790.0</real>
 			<key>ypos</key>
 			<real>320.0</real>
 		</dict>
@@ -1114,14 +1266,10 @@ note: not all emojis are available in all languages.</string>
 						<string>Morse ♨️</string>
 						<string>Morse</string>
 					</array>
-					<array>
-						<string>Classic 😃</string>
-						<string>default</string>
-					</array>
 				</array>
 			</dict>
 			<key>description</key>
-			<string>workflow notification sound.</string>
+			<string>sound played with the notifications (end of a refresh, errors).</string>
 			<key>label</key>
 			<string>🎷 Notification sound</string>
 			<key>type</key>
@@ -1401,7 +1549,7 @@ note: not all emojis are available in all languages.</string>
 		</dict>
 	</array>
 	<key>version</key>
-	<string>2.0.0</string>
+	<string>2.1.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/BenjaminOddou/alfred-emoji-wine</string>
 </dict>

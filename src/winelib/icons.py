@@ -1,10 +1,11 @@
 """Icon generation: emoji glyphs through AppKit (osascript/JXA), assets with pure Python."""
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess
 import tempfile
-from typing import Callable, Dict, List, Set
 
 from . import png
 from .emoji_data import icon_filename
@@ -12,7 +13,6 @@ from .settings import ICON_SIZE
 
 RENDER_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "render_icons.js")
 PADDING_MARKER = ".padding"
-Runner = Callable[..., "subprocess.CompletedProcess"]
 
 
 def icons_are_current(icons_dir: str, padding: int) -> bool:
@@ -36,7 +36,7 @@ def prepare_icons_dir(icons_dir: str, padding: int) -> None:
         handle.write(str(padding))
 
 
-def missing_jobs(emojis: List[Dict[str, str]], icons_dir: str) -> List[Dict[str, str]]:
+def missing_jobs(emojis: list, icons_dir: str) -> list:
     """Jobs for the emojis that have no icon yet (icons do not depend on the language)."""
     jobs, seen = [], set()
     for entry in emojis:
@@ -49,11 +49,11 @@ def missing_jobs(emojis: List[Dict[str, str]], icons_dir: str) -> List[Dict[str,
 
 
 def render_emoji_icons(
-    jobs: List[Dict[str, str]],
+    jobs: list,
     icons_dir: str,
     padding: int,
-    runner: Runner = subprocess.run,
-) -> List[str]:
+    runner=subprocess.run,
+) -> list:
     """Render every job with a single osascript call. Returns the files that failed."""
     if not jobs:
         return []
@@ -83,6 +83,6 @@ def install_assets(assets_dir: str, icons_dir: str, padding: int) -> None:
             handle.write(png.pad_png(data, padding) if padding else data)
 
 
-def rendered_names(emojis: List[Dict[str, str]], icons_dir: str) -> Set[str]:
+def rendered_names(emojis: list, icons_dir: str) -> set:
     """Names of the emojis that have an icon on disk."""
     return {e["name"] for e in emojis if os.path.exists(os.path.join(icons_dir, icon_filename(e["name"])))}

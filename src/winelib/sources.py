@@ -1,15 +1,14 @@
 """Remote data sources (Unicode + CLDR)."""
 
+from __future__ import annotations
+
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, Tuple
 from urllib import request
 
 USER_AGENT = "alfred-emoji-wine (+https://github.com/BenjaminOddou/alfred-emoji-wine)"
 TIMEOUT = 30
 EMOJI_TEST_URL = "https://unicode.org/Public/emoji/latest/emoji-test.txt"
 CLDR_URL = "https://raw.githubusercontent.com/unicode-org/cldr/main/common/{folder}/{language}.xml"
-
-Fetcher = Callable[[str], str]
 
 
 def fetch_url(url: str) -> str:
@@ -21,7 +20,7 @@ def fetch_url(url: str) -> str:
         raise RuntimeError("Failed to fetch %s : %s" % (url, exc)) from exc
 
 
-def cldr_urls(language: str) -> Tuple[str, str]:
+def cldr_urls(language: str) -> tuple:
     code = language.replace("-", "_")
     return (
         CLDR_URL.format(folder="annotations", language=code),
@@ -29,7 +28,7 @@ def cldr_urls(language: str) -> Tuple[str, str]:
     )
 
 
-def fetch_all(language: str, fetch: Fetcher = fetch_url) -> Tuple[str, str, str]:
+def fetch_all(language: str, fetch=fetch_url) -> tuple:
     """Download emoji-test, annotations and derived annotations concurrently."""
     urls = (EMOJI_TEST_URL,) + cldr_urls(language)
     with ThreadPoolExecutor(max_workers=len(urls)) as pool:

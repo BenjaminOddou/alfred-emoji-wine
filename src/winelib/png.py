@@ -3,9 +3,10 @@
 Supports non-interlaced 8-bit PNGs (grayscale, RGB, palette, +alpha variants).
 """
 
+from __future__ import annotations
+
 import struct
 import zlib
-from typing import List, Tuple
 
 _SIGNATURE = b"\x89PNG\r\n\x1a\n"
 _CHANNELS = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}
@@ -19,9 +20,9 @@ def _chunks(data: bytes):
         pos += 12 + length
 
 
-def _unfilter(raw: bytes, width: int, height: int, bpp: int) -> List[bytearray]:
+def _unfilter(raw: bytes, width: int, height: int, bpp: int) -> list:
     stride = width * bpp
-    rows: List[bytearray] = []
+    rows: list = []
     prev = bytearray(stride)
     pos = 0
     for _ in range(height):
@@ -48,7 +49,7 @@ def _unfilter(raw: bytes, width: int, height: int, bpp: int) -> List[bytearray]:
     return rows
 
 
-def read_rgba(data: bytes) -> Tuple[int, int, List[bytes]]:
+def read_rgba(data: bytes) -> tuple:
     """Decode a PNG into (width, height, rows of RGBA bytes)."""
     if not data.startswith(_SIGNATURE):
         raise ValueError("not a PNG file")
@@ -88,7 +89,7 @@ def read_rgba(data: bytes) -> Tuple[int, int, List[bytes]]:
     return width, height, out
 
 
-def write_rgba(width: int, height: int, rows: List[bytes]) -> bytes:
+def write_rgba(width: int, height: int, rows: list) -> bytes:
     """Encode RGBA rows as a PNG."""
 
     def chunk(kind: bytes, body: bytes) -> bytes:

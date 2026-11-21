@@ -1,8 +1,8 @@
 """Pure data logic: parse Unicode / CLDR sources and build the emoji list."""
 
+from __future__ import annotations
+
 import re
-import xml.etree.ElementTree as ET
-from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 SKIN_TONE_NAMES = {
     0x1F3FB: "light skin tone",
@@ -15,9 +15,10 @@ SKIN_TONE_NAMES = {
 TITLE_AS_TAGS_PREFIXES = ("flag:", "keycap:")
 _VARIATION_SELECTOR = "️"
 _STATUS_RE = re.compile(r"\s;\s(?:fully-qualified|component)\s+#\s(\S+)\sE[\d.]+\s(.+)$")
+_FILENAME_RE = re.compile(r"[:/\\]")
 
 
-def parse_emoji_test(text: str) -> List[Dict[str, str]]:
+def parse_emoji_test(text: str) -> list:
     """Extract [{emoji, name}] from unicode.org `emoji-test.txt`."""
     emojis = []
     for line in text.splitlines():
@@ -33,12 +34,12 @@ def remove_skin_tones(emoji: str) -> str:
     return "".join(c for c in emoji if ord(c) not in SKIN_TONE_NAMES)
 
 
-def base_emojis_with_variants(emojis: Iterable[str]) -> Set[str]:
+def base_emojis_with_variants(emojis) -> set:
     """Base emojis that also exist with a skin tone modifier."""
     return {remove_skin_tones(e) for e in emojis if remove_skin_tones(e) != e}
 
 
-def get_skin_tones(emoji: str, bases_with_variants: Set[str]) -> List[str]:
+def get_skin_tones(emoji: str, bases_with_variants: set) -> list:
     """Skin tone labels: 'none' (tone-less variant), 'base' (no variants) or tone names."""
     if emoji in bases_with_variants:
         return ["none"]
@@ -50,12 +51,14 @@ def get_skin_tones(emoji: str, bases_with_variants: Set[str]) -> List[str]:
     return tones or ["base"]
 
 
-def parse_annotations(*xml_documents: str) -> Dict[str, Dict[str, Optional[object]]]:
+def parse_annotations(*xml_documents: str) -> dict:
     """Index CLDR annotation files by codepoint: {cp: {"tts": str, "tags": [str]}}.
 
     The first document wins over the following ones (annotations before derived).
     """
-    index: Dict[str, Dict[str, Optional[object]]] = {}
+    import xml.etree.ElementTree as ET  # refresh only
+
+    index: dict = {}
     for document in xml_documents:
         for node in ET.fromstring(document).iter("annotation"):
             cp = node.get("cp")
@@ -69,7 +72,7 @@ def parse_annotations(*xml_documents: str) -> Dict[str, Dict[str, Optional[objec
     return index
 
 
-def annotate(emoji: str, name: str, index: Dict[str, Dict]) -> Tuple[Optional[str], Optional[List[str]]]:
+def annotate(emoji: str, name: str, index: dict) -> tuple:
     """Return (title, tags) for an emoji, or (None, None) when it is not translated."""
     entry = index.get(emoji.replace(_VARIATION_SELECTOR, ""))
     if not entry or entry["tts"] is None or entry["tags"] is None:
@@ -83,11 +86,7 @@ def annotate(emoji: str, name: str, index: Dict[str, Dict]) -> Tuple[Optional[st
     return title, tags
 
 
-def build_items(
-    emojis: List[Dict[str, str]],
-    index: Dict[str, Dict],
-    image_names: Optional[Set[str]] = None,
-) -> List[Dict]:
+def build_items(emojis: list, index: dict, image_names: set | None = None) -> list:
     """Assemble the api.json `items` list.
 
     `image_names` holds the names whose icon was rendered; None means "all of them".
@@ -112,4 +111,4 @@ def build_items(
 
 def icon_filename(name: str) -> str:
     """File name of an emoji icon, derived from its unicode name."""
-    return re.sub(r"[:/\\]", "", name) + ".png"
+    return _FILENAME_RE.sub("", name) + ".png"
