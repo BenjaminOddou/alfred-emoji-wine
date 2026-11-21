@@ -57,8 +57,11 @@ def play(sound: str, popen=None) -> None:
 
 
 def script_output(settings: Settings, arg: str = "", notice: tuple = ("", ""), popen=None) -> str:
-    """What a Run Script prints: Alfred posts `notice` (title, text) when the text is not empty."""
-    title, text = notice
+    """What a Run Script prints: Alfred posts `notice` (title, text) when the text is not empty.
+
+    `🔔 Notifications` off: no notification and no sound (the log keeps everything).
+    """
+    title, text = notice if settings.notify else ("", "")
     if text:
         play(settings.sound, popen)
     return run_output(arg, title, text)

@@ -109,6 +109,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>63B3CD08-C844-563A-8243-04514E5EEA27</key>
 		<array>
 			<dict>
@@ -126,7 +139,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+				<string>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -209,7 +222,7 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>A55563EE-0655-56FA-837C-3A74287E68BC</string>
+				<string>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -745,6 +758,38 @@
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:notify}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>0</string>
+						<key>outputlabel</key>
+						<string>silent</string>
+						<key>uid</key>
+						<string>2BF06E69-156F-505E-B44E-EECB8CE2F1F6</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>notify</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string># 🍷 Alfred Emoji Wine
@@ -764,7 +809,7 @@
 3. **Tags**, **API information** and **Refresh the API** are always at the top of `wine` (`wine &gt;` opens the same menu): create custom tags and link them to emojis.
    ⏎ or ⇥ to go forward, **Return** to go back one level, **Back to search** to search emojis, and type to filter or to name a tag.
 
-Alfred posts the notifications itself (end of a refresh, errors), with the `🎷 Notification sound`.
+Alfred posts the notifications itself (refresh, errors), with the `🎷 Notification sound`. Untick `🔔 Notifications` to keep the workflow silent.
 
 You can edit the trigger (flagged with 🕹️) and every other option in the user configuration panel.
 
@@ -874,6 +919,16 @@ in the frontmost app</string>
 			<key>ypos</key>
 			<real>570.0</real>
 		</dict>
+		<key>61F3A55E-1FE9-598B-B7C2-94D8578BC13D</key>
+		<dict>
+			<key>note</key>
+			<string>🔔 Notifications
+unticked: silent</string>
+			<key>xpos</key>
+			<real>790.0</real>
+			<key>ypos</key>
+			<real>320.0</real>
+		</dict>
 		<key>63B3CD08-C844-563A-8243-04514E5EEA27</key>
 		<dict>
 			<key>note</key>
@@ -912,7 +967,7 @@ the query starts with &gt;</string>
 			<string>⏳ Notification:
 data download started</string>
 			<key>xpos</key>
-			<real>790.0</real>
+			<real>990.0</real>
 			<key>ypos</key>
 			<real>320.0</real>
 		</dict>
@@ -1198,6 +1253,25 @@ note: not all emojis are available in all languages.</string>
 			<string>popupbutton</string>
 			<key>variable</key>
 			<string>skin_tone</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>show the progress and the result of a refresh, and the errors, in a native macOS notification.</string>
+			<key>label</key>
+			<string>🔔 Notifications</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>notify</string>
 		</dict>
 		<dict>
 			<key>config</key>

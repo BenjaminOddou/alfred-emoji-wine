@@ -67,6 +67,9 @@ class InfoPlist(unittest.TestCase):
                 if condition["inputstring"] == "{query}":  # menu query goes to the list view
                     self.assertEqual(condition["outputlabel"], "menu")
                     continue
+                if condition["inputstring"] == "{var:notify}":  # 🔔 Notifications unticked: silent
+                    self.assertEqual((condition["matchstring"], condition["outputlabel"]), ("0", "silent"))
+                    continue
                 self.assertEqual(condition["inputstring"], "{var:action}")
                 self.assertIn(condition["matchstring"], known)
 
@@ -79,7 +82,7 @@ class InfoPlist(unittest.TestCase):
 
     def test_settings_used_by_scripts_are_configurable(self):
         variables = {u["variable"] for u in self.plist["userconfigurationconfig"]}
-        for name in ("language", "skin_tone", "sound", "padding", "emoji_dictionary",
+        for name in ("language", "skin_tone", "notify", "sound", "padding", "emoji_dictionary",
                      "short_copy", "short_paste", "short_web", "style", "trigger1"):
             self.assertIn(name, variables)
         self.assertLessEqual(variables - {"trigger1"}, set(Settings.__slots__))
@@ -208,11 +211,26 @@ class Alfred6Notifications(unittest.TestCase):
                               if c["matchstring"] == "refresh")
         api = next(u for u, o in self.objects.items() if o["config"].get("triggerid") == "api")
         for uid, output in ((actions_uid, refresh_output), (api, None)):
-            types = [t["type"] for t in self.targets(uid, output)]
-            self.assertEqual(types, ["alfred.workflow.output.notification", "alfred.workflow.action.script"])
-            wait = self.targets(uid, output)[0]["config"]
-            self.assertFalse(wait["onlyshowifquerypopulated"])
-            self.assertTrue(wait["title"].startswith("⏳"))
+            gate, script = self.targets(uid, output)
+            self.assertEqual(script["type"], "alfred.workflow.action.script")
+            # 🔔 Notifications unticked ("0"): the silent output leads nowhere, else the notification
+            (silent,) = gate["config"]["conditions"]
+            self.assertEqual((silent["inputstring"], silent["matchstring"]), ("{var:notify}", "0"))
+            self.assertFalse(gate["config"]["hideelse"])
+            self.assertEqual(self.targets(gate["uid"], silent["uid"]), [])
+            links = self.plist["connections"][gate["uid"]]
+            self.assertEqual([l.get("sourceoutputuid") for l in links], [None])  # the else output
+            (wait,) = self.targets(gate["uid"])
+            self.assertEqual(wait["type"], "alfred.workflow.output.notification")
+            self.assertFalse(wait["config"]["onlyshowifquerypopulated"])
+            self.assertTrue(wait["config"]["title"].startswith("⏳"))
+
+    def test_notifications_checkbox_like_alfred_dashlane(self):
+        entry = next(c for c in self.plist["userconfigurationconfig"] if c["variable"] == "notify")
+        self.assertEqual((entry["type"], entry["label"], entry["config"]["default"]),
+                         ("checkbox", "🔔 Notifications", True))
+        variables = [c["variable"] for c in self.plist["userconfigurationconfig"]]
+        self.assertEqual(variables.index("notify") + 1, variables.index("sound"))
 
     def test_sound_choices_are_system_sounds(self):
         entry = next(c for c in self.plist["userconfigurationconfig"] if c["variable"] == "sound")

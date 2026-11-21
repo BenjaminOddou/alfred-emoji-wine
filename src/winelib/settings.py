@@ -15,6 +15,7 @@ DICTIONARIES = ("emojipedia.org", "emojiterra.com", "emojiall.com")
 DEFAULTS = {
     "language": "en",
     "skin_tone": "all",
+    "notify": True,  # 🔔 Notifications checkbox
     "sound": "",
     "padding": DEFAULT_PADDING,
     "emoji_dictionary": "emojipedia.org",
@@ -99,6 +100,7 @@ class Settings:
     def from_env(cls, environ=None, workflow_dir: str | None = None) -> Settings:
         env = os.environ if environ is None else environ
         values = {name: env.get(ENV_NAMES.get(name, name), default) for name, default in DEFAULTS.items()}
+        values["notify"] = str(values["notify"]).strip() != "0"  # Alfred checkbox: "1" / "0"
         try:
             values["padding"] = max(0, int(str(values["padding"]).strip()))
         except ValueError:

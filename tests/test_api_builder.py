@@ -1,10 +1,12 @@
+import json
 import os
 import subprocess
 import unittest
+from unittest import mock
 
 from tests.helpers import CLDR_ANNOTATIONS, CLDR_DERIVED, EMOJI_TEST, TempDirTestCase, make_settings
 from winelib import api_builder, sources
-from winelib.logs import ERROR, SUCCESS
+from winelib.logs import ERROR, SUCCESS, script_output
 from winelib.storage import read_json
 
 LANG = "🇫🇷 Français"
@@ -95,6 +97,31 @@ class BuildApi(TempDirTestCase):
         os.makedirs(app)
         self.build()
         self.assertEqual([n for n in os.listdir(self.settings.cache_dir) if n.endswith(".app")], [])
+
+
+class ScriptOutput(TempDirTestCase):
+    """What refresh.py / tags.py print: the notification Alfred posts, and its sound."""
+
+    def output(self, notify, notice=(SUCCESS, "Done")):
+        sounds = []
+        settings = make_settings(self.tmp, notify=notify, sound="Submarine")
+        with mock.patch("os.path.isfile", return_value=True):
+            out = json.loads(script_output(settings, ">tags›", notice, popen=lambda cmd, **kw: sounds.append(cmd)))
+        return out["alfredworkflow"], sounds
+
+    def test_notification_with_sound(self):
+        out, sounds = self.output(True)
+        self.assertEqual(out, {"arg": ">tags›", "variables": {"notify_title": SUCCESS, "notify_text": "Done"}})
+        self.assertEqual(sounds, [["afplay", "/System/Library/Sounds/Submarine.aiff"]])
+
+    def test_notifications_off_is_silent(self):
+        for notice in ((SUCCESS, "Done"), (ERROR, "Something went wrong")):
+            out, sounds = self.output(False, notice)
+            self.assertEqual(out, {"arg": ">tags›", "variables": {"notify_title": "", "notify_text": ""}})
+            self.assertEqual(sounds, [])
+
+    def test_no_text_no_sound(self):
+        self.assertEqual(self.output(True, ("", ""))[1], [])
 
 
 if __name__ == "__main__":

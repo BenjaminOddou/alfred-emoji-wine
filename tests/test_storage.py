@@ -34,6 +34,11 @@ class SettingsFromEnv(TempDirTestCase):
         self.assertTrue(s.tags_file.endswith("tags-ja.json"))
         self.assertEqual(s.assets_dir, "/wf/icons/assets")
 
+    def test_notify_checkbox(self):
+        self.assertTrue(Settings.from_env({}, workflow_dir="/wf").notify)  # default on
+        self.assertTrue(Settings.from_env({"notify": "1"}, workflow_dir="/wf").notify)
+        self.assertFalse(Settings.from_env({"notify": "0"}, workflow_dir="/wf").notify)
+
     def test_bad_padding_falls_back(self):
         self.assertEqual(Settings.from_env({"padding": "abc"}, workflow_dir="/wf").padding, 10)
         self.assertEqual(Settings.from_env({"padding": "-3"}, workflow_dir="/wf").padding, 0)

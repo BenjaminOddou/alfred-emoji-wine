@@ -44,7 +44,7 @@ That's it, nothing else to install. If `python3` is missing, run `xcode-select -
 
 The workflow uses what Alfred 6 brings to workflows:
 
-* **Native notifications** : Alfred posts them itself (*Post Notification* output, macOS UserNotifications). The Notificator helper app is gone, the old copy is removed from the cache at the next refresh.
+* **Native notifications** : Alfred posts them itself (*Post Notification* output, macOS UserNotifications). The Notificator helper app is gone, the old copy is removed from the cache at the next refresh. They can be turned off with `🔔 Notifications`, as in [Alfred Dashlane](https://github.com/BenjaminOddou/alfred-dashlane).
 * **Menu always on top** (`skipknowledge`) : results keep the workflow order, so **Tags**, **API information** and **Refresh the API** always come first. Results have no `uid` anymore : Alfred doesn't reorder them with what it learnt.
 * **Strict modifier keys** (`strictmods`) : a shortcut you deactivated (or <kbd>⇧</kbd><kbd>⏎</kbd> on an emoji without dictionary page, any modifier on a menu row) does nothing, instead of running the <kbd>⏎</kbd> action by surprise.
 * **Icons keep their shape** (`iconresize`).
@@ -104,7 +104,9 @@ If you wish to use another language, open a GitHub issue [here](https://github.c
 
 5. `🌈 Skin Tone` : Select your preferred skin tone.
 
-6. `🎷 Notification sound` : Personalize the sound played with the notifications (end of a refresh, errors), or mute it.
+6. `🔔 Notifications` : show the progress and the result of a refresh, and the errors, in a native macOS notification (default on). Untick it and the workflow is silent : no notification, no sound (errors are still written in the logs).
+
+7. `🎷 Notification sound` : Personalize the sound played with the notifications, or mute it.
 
 ### Search an emoji
 
@@ -168,6 +170,7 @@ Project layout :
 * Up to 5x faster search : a search index with pre-normalized text and ready-made JSON (no JSON decoding, no accent stripping, no plist parsing, no `json` / `re` import at each keystroke), compact output (no `match` in list view).
 * The menu reads the search index instead of `api.json`. The unlink picker shows every skin tone, so a linked emoji can always be unlinked.
 * One notification at the end of a refresh (with the number of emojis) and on errors, with the traceback in the logs.
+* New `🔔 Notifications` option (as in Alfred Dashlane) : untick it to keep the workflow silent.
 
 ## 🆕 What's new in 2.0.0
 

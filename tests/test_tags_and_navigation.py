@@ -240,6 +240,13 @@ class EntryPoints(TempDirTestCase):
         with open(s.log_file, encoding="utf-8") as handle:
             self.assertIn("invalid tag operation", handle.read())
 
+    def test_tags_script_is_silent_with_notifications_off(self):
+        s, env = self.env()
+        env["notify"] = "0"
+        self.assertEqual(self.run_tags(env, "nope", "", "x"), (">tags›", {"notify_title": "", "notify_text": ""}))
+        with open(s.log_file, encoding="utf-8") as handle:
+            self.assertIn("invalid tag operation", handle.read())  # still logged
+
 
 if __name__ == "__main__":
     unittest.main()
